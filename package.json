@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "yarn": "^1.22.17"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.38"
   }
 }
