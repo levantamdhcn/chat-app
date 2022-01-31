@@ -1,0 +1,95 @@
+[class^="icon-"],
+[class*=" icon-"] {
+  width: 16px;
+  height: 16px;
+  display: block;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #9ba1ad;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: cover;
+}
+.icon {
+  &-add-user {
+    mask-image: url("../assets/_icon/add-user.svg");
+  }
+  &-archive {
+    mask-image: url("../assets/_icon/archive.svg");
+  }
+  &-arrow-down {
+    mask-image: url("../assets/_icon/arrow-down.svg");
+  }
+  &-arrow-up {
+    mask-image: url("../assets/_icon/arrow-up.svg");
+  }
+  &-arrow-right {
+    mask-image: url("../assets/_icon/arrow-right.svg");
+  }
+  &-attach {
+    mask-image: url("../assets/_icon/attach.svg");
+  }
+  &-call {
+    mask-image: url("../assets/_icon/call.svg");
+  }
+  &-contact {
+    mask-image: url("../assets/_icon/contact.svg");
+  }
+  &-dark-mode {
+    mask-image: url("../assets/_icon/dark-mode.svg");
+  }
+  &-light-mode {
+    mask-image: url("../assets/_icon/light-mode.svg");
+  }
+  &-download {
+    mask-image: url("../assets/_icon/download.svg");
+  }
+  &-edit {
+    mask-image: url("../assets/_icon/edit.svg");
+  }
+  &-global {
+    mask-image: url("../assets/_icon/global.svg");
+  }
+  &-group {
+    mask-image: url("../assets/_icon/group.svg");
+  }
+  &-image {
+    mask-image: url("../assets/_icon/image.svg");
+  }
+  &-mail {
+    mask-image: url("../assets/_icon/mail.svg");
+  }
+  &-message {
+    mask-image: url("../assets/_icon/message.svg");
+  }
+  &-more {
+    mask-image: url("../assets/_icon/more.svg");
+  }
+  &-mute {
+    mask-image: url("../assets/_icon/mute.svg");
+  }
+  &-search {
+    mask-image: url("../assets/_icon/search.svg");
+  }
+  &-settings {
+    mask-image: url("../assets/_icon/settings.svg");
+  }
+  &-three-dots-stand {
+    mask-image: url("../assets/_icon/three-dots-stand.svg");
+  }
+  &-time {
+    mask-image: url("../assets/_icon/time.svg");
+  }
+  &-trash {
+    mask-image: url("../assets/_icon/trash.svg");
+  }
+  &-user {
+    mask-image: url("../assets/_icon/user.svg");
+  }
+  &-video-call {
+    mask-image: url("../assets/_icon/video-call.svg");
+  }
+  &-logo {
+    mask-image: url("../assets/_icon/logo.svg");
+  }
+}
