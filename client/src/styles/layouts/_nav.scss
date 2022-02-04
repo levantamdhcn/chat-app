@@ -30,7 +30,7 @@
     border-radius: 8px;
     margin: 7px 0;
     span {
-      background-color: var(--lightGray);
+      background-color: var(--rock-blue);
       width: 24px;
       height: 24px;
       cursor: pointer;
@@ -42,7 +42,7 @@
     }
   }
   .active {
-    background-color: var(--bg-hover);
+    background-color: var(--limed-spruce);
     span {
       background-color: $mainColor;
     }
