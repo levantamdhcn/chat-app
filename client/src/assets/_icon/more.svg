@@ -1,12 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="256" height="256" viewBox="0 0 256 256" xml:space="preserve">
-<desc>Created with Fabric.js 1.7.22</desc>
-<defs>
-</defs>
-<g transform="translate(128 128) scale(0.72 0.72)" style="">
-	<g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(-175.05 -175.05000000000004) scale(3.89 3.89)" >
-	<circle cx="44.995000000000005" cy="44.995000000000005" r="4.365" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform="  matrix(1 0 0 1 0 0) "/>
-	<circle cx="4.365" cy="44.995000000000005" r="4.365" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform="  matrix(1 0 0 1 0 0) "/>
-	<circle cx="85.63499999999999" cy="44.995000000000005" r="4.365" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform="  matrix(1 0 0 1 0 0) "/>
-</g>
-</g>
+<svg width="49px" height="49px" viewBox="0 -0.5 49 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16.668 24C16.668 25.933 15.101 27.5 13.168 27.5C11.235 27.5 9.66797 25.933 9.66797 24C9.66797 22.067 11.235 20.5 13.168 20.5C15.101 20.5 16.668 22.067 16.668 24Z" fill="#212121"/>
+<path d="M28.168 24C28.168 25.933 26.601 27.5 24.668 27.5C22.735 27.5 21.168 25.933 21.168 24C21.168 22.067 22.735 20.5 24.668 20.5C26.601 20.5 28.168 22.067 28.168 24Z" fill="#212121"/>
+<path d="M36.168 27.5C38.101 27.5 39.668 25.933 39.668 24C39.668 22.067 38.101 20.5 36.168 20.5C34.235 20.5 32.668 22.067 32.668 24C32.668 25.933 34.235 27.5 36.168 27.5Z" fill="#212121"/>
 </svg>

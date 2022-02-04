@@ -1,6 +1,6 @@
 import React from 'react';
 import NavBar from './NavBar/NavBar';
-import TabContent from './TabContent';
+import TabContent from '../../views/sidebar';
 
 interface MainLayoutProp {
   children : Node

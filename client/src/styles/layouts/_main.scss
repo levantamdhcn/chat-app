@@ -1,5 +1,36 @@
 .main-panel {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  height: 100vh;
+  .children-wrapper {
+    height: 100%;
+  }
+}
+
+.tab-content {
+  max-width: 380px;
+  min-width: 380px;
+  height: 100%;
+  background-color: $bg-gray-dark;
+  &-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 24px 0 24px;
+    background-color: $bg-gray-dark;
+    .title {
+      margin: 0;
+      color: $lightGrey;
+      font-size: 22.5px;
+      font-weight: 600;
+    }
+  }
+  &-actions {
+    span {
+      width: 20px;
+      height: 20px;
+      background-color: var(--gull-gray);
+    }
+  }
 }
