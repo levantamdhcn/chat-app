@@ -1,3 +1,3 @@
-import TabContent from "./TabContent";
+import SideBar from "./SideBar";
 
-export default TabContent;
+export default SideBar;

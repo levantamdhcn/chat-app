@@ -1,5 +1,5 @@
 import React from 'react';
-import NavBar from './NavBar/NavBar';
+import NavBar from '../../views/sidebar/nav/NavBar';
 import TabContent from '../../views/sidebar';
 
 interface MainLayoutProp {
@@ -9,7 +9,6 @@ interface MainLayoutProp {
 const MainLayout = ({ children }: MainLayoutProp) => {
   return (
       <div className="main-panel">
-          <NavBar />
           <div className="children-wrapper">
             {children}
           </div>

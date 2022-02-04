@@ -1,15 +1,23 @@
 import React from 'react';
 import Avatar from '../../../assets/images/avatar.jpg'
+import Groups from '../group/Groups';
+import Profile from '../profile';
 
 const navTop = [
   {
     icon: 'user',
+    title: 'My Profile',
+    component: <Profile />,
+    action: <span className='icon-three-dots-stand'></span>
   },
   {
     icon: 'message',
   },
   {
     icon: 'group',
+    title: 'Group',
+    component: <Groups />,
+    action: <span className='icon-group'></span>
   },
   {
     icon: 'contact',
@@ -31,7 +39,7 @@ const navBottom  = [
   },
 ]
 
-const NavBar = () => {
+const NavBar = ({ currentTab, setCurrenTab }) => {
   return (
     <div className='navbar'>
       <div className="logo">
@@ -40,8 +48,15 @@ const NavBar = () => {
       <div className="nav-top">
         {
           navTop.map(el => (
-            <div className='nav-item' key={el.icon}>
-              <span className={`icon-${el.icon} hover-effect`}></span>
+            <div 
+              className={`nav-item ${ currentTab?.title === el.title ? 'active' : ''}`} key={el.icon} 
+              onClick={(state) => setCurrenTab({
+                ...state,
+                title: el.title,
+                children: el.component,
+                headerActionIcon: el.action
+              })}>
+              <span className={`icon-${el.icon}`}></span>
             </div>
           ))
         }
