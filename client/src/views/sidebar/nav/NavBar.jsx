@@ -1,5 +1,6 @@
 import React from 'react';
 import Avatar from '../../../assets/images/avatar.jpg'
+import Contacts from '../contacts';
 import Groups from '../group/Groups';
 import Profile from '../profile';
 
@@ -21,6 +22,9 @@ const navTop = [
   },
   {
     icon: 'contact',
+    title: 'Contacts',
+    component: <Contacts />,
+    action: <span className='icon-add-user'></span>
   },
   {
     icon: 'settings',

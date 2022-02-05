@@ -1,0 +1,41 @@
+.contacts {
+  padding: 0 24px;
+  .search-wrapper {
+    margin-bottom: 24px;
+  }
+}
+
+.contacts-group {
+  margin-bottom: 16px;
+  &-list {
+    padding-top: 24px;
+  }
+  &-name {
+    padding: 16px;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: $mainColor;
+  }
+}
+
+.contact-group {
+  .contact {
+    padding: 10px 20px;
+  }
+}
+
+.contacts-list {
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 10px 20px;
+    color: $lightGrey;
+    font-size: 14px;
+    font-weight: 600;
+    span {
+      cursor: pointer;
+    }
+  }
+}
