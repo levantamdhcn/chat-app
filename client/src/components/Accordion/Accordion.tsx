@@ -2,16 +2,17 @@ import React, { ReactElement } from 'react';
 
 interface AccordionProp {
   id: number
-  icon: ReactElement
+  icon?: ReactElement
   title: string
   children: ReactElement
   isOpen?: any
   setIsOpen: (arg: any) => void
+  action?: ReactElement
 } 
 
 
 
-const Accordion = ({ id, icon, title, children, isOpen, setIsOpen }: AccordionProp) => {
+const Accordion = ({ id, icon, title, children, isOpen, setIsOpen, action }: AccordionProp) => {
 
   const handleToggle = (id: any) => {
     setIsOpen((state: any) => {
@@ -28,12 +29,15 @@ const Accordion = ({ id, icon, title, children, isOpen, setIsOpen }: AccordionPr
           {icon}
           {title}
         </div>
-        {
-          isOpen ? (<span className="icon-arrow-down"></span>) : (<span className="icon-arrow-right"></span>)
-        }
+        <span className="icon-arrow-right"></span>
       </div>
       <div className={`accordion-item ${!isOpen ? "collapsed" : ""}`}>
         <div className="accordion-content">
+          {
+            action && <div className="accordion-action">
+                        {action}
+                      </div>
+          }
           {children}
         </div>
       </div>

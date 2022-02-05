@@ -1,0 +1,10 @@
+.settings {
+  &-content {
+    position: relative;
+    padding: 24px;
+    .edit-user-btn {
+      position: absolute;
+      right: 0;
+    }
+  }
+}

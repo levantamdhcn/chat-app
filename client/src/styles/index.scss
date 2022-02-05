@@ -12,6 +12,7 @@ html {
   width: 100%;
   min-height: 100vh;
   overflow: hidden;
+  font-size: 15px;
 }
 
 * {
@@ -37,5 +38,17 @@ ul {
   &:hover {
     transform: scale(1.05);
     transition: all 0.2s ease-in-out;
+  }
+}
+
+.scroll-wrapper {
+  overflow-x: hidden;
+  overflow-y: scroll;
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: $lightGrey;
+  }
+  &::-webkit-scrollbar {
+    width: 4px;
   }
 }

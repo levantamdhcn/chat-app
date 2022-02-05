@@ -1,0 +1,29 @@
+.privacy {
+  &-field {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    color: $lightGrey;
+    font-size: 13px;
+    font-weight: 600;
+    &:not(:last-child) {
+      border-bottom: 1px solid $bg-dark;
+    }
+    &-action {
+      max-width: 95px;
+    }
+    .modal-status-wrapper {
+      .current-status {
+        font-size: 13px;
+        background-color: $bg-dark;
+        border-radius: 2px;
+        padding: 8px 10px;
+        color: $lightGrey;
+      }
+      .modal-status {
+        right: 0;
+      }
+    }
+  }
+}

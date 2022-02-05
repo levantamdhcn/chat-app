@@ -1,4 +1,4 @@
-import React, { Children, ReactElement, useState} from 'react';
+import React, { useState } from 'react';
 import NavBar from './nav/index';
 import Profile from './profile';
 
@@ -11,14 +11,13 @@ const SideBar = () => {
 
   const { title, children, headerActionIcon } = currentTab
 
-  console.log('currentTab',currentTab)
   return (
     <div className='side-bar'>
         <NavBar 
           currentTab={currentTab}
           setCurrenTab={setCurrentTab}
         />
-        <div className="tab-content-wrapper">
+        <div className="tab-content-wrapper scroll-wrapper">
           <div className="tab-content-header">
             <h1 className="title">{title}</h1>
             <div className="tab-content-actions">
