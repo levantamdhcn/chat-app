@@ -43,7 +43,6 @@ export const renderRoutes = (routes: routes) => {
 }
 
 const routers = [
-
     {
         exact: true,
         path: "/",

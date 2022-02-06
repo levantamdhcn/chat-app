@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ChatBox from '../chat/ChatBox/ChatBox';
 import NavBar from './nav/index';
 import Profile from './profile';
 
@@ -26,6 +27,7 @@ const SideBar = () => {
           </div>
           {children}
         </div>
+        <ChatBox />
     </div>
   )
 };

@@ -1,0 +1,120 @@
+.chat {
+  padding: 0 24px;
+  &-active-friends {
+    padding-bottom: 24px;
+  }
+}
+
+.active-friend {
+  cursor: pointer;
+  margin-top: 32px;
+  padding: 8px;
+  border-radius: 8px;
+  background-color: $bg-dark;
+  width: 71px;
+  height: 52px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &-avt-wrapper {
+    position: absolute;
+    top: -16px;
+    span {
+      background-color: $active;
+      width: 10px;
+      height: 10px;
+      position: absolute;
+      bottom: 4px;
+      right: 0;
+    }
+  }
+  &-avt {
+    width: 35.2px;
+    height: 35.2px;
+    border-radius: 50%;
+  }
+  &-name {
+    margin: 16px 0 4px 0;
+    font-weight: 600;
+    font-size: 13px;
+    color: $lightGrey;
+  }
+}
+
+.chat-recent {
+  &-title {
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: capitalize;
+    color: $lightGrey;
+    margin-bottom: 24px;
+  }
+}
+
+.inbox-list {
+  max-height: calc(100vh - 300px);
+  .inbox {
+    width: 100%;
+    border-radius: 4px;
+    height: 74px;
+    display: flex;
+    align-items: center;
+    .sender-avt {
+      position: relative;
+      margin-right: 16px;
+      img {
+        width: 35.2px;
+        height: 35.2px;
+        border-radius: 50%;
+      }
+      span {
+        position: absolute;
+        bottom: 3px;
+        right: 2px;
+        width: 8px;
+        height: 8px;
+      }
+    }
+  }
+  .inbox-preview {
+    width: 100%;
+    .sender-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: $lightGrey;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 0 4px 0;
+      span {
+        &:last-child {
+          font-size: 11px;
+          color: var(--casper-grey);
+          font-weight: 400;
+        }
+      }
+    }
+    .latest-msg {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      p {
+        margin: 0;
+        color: var(--casper-grey);
+        font-size: 14px;
+      }
+      p.typing {
+        color: $mainColor;
+      }
+      span {
+        padding: 2.5px 6px;
+        font-size: 10px;
+        font-weight: 600;
+        color: $red;
+        background-color: var(--horn-red);
+        border-radius: 30px;
+      }
+    }
+  }
+}
