@@ -1,6 +1,5 @@
 import { Switch, Route } from 'react-router-dom'
 import MainLayout from './layouts/MainLayout/index'
-import ChatRoom from './components/ChatRoom/index'
 import TabContent from './views/sidebar'
 
 interface route {
@@ -44,7 +43,6 @@ export const renderRoutes = (routes: routes) => {
 }
 
 const routers = [
-
     {
         exact: true,
         path: "/",

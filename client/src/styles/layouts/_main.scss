@@ -4,12 +4,12 @@
   height: 100vh;
   .children-wrapper {
     height: 100%;
+    width: 100%;
   }
 }
 
 .side-bar {
-  max-width: 455px;
-  min-width: 455px;
+  width: 100%;
   height: 100%;
   background-color: $bg-gray-dark;
   display: flex;

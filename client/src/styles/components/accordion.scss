@@ -27,9 +27,13 @@
       background-color: $lightGrey;
       width: 8px;
       height: 8px;
+      transition: all 0.3s ease;
     }
     &.open {
       border-radius: 4px 4px 0 0;
+      span.icon-arrow-right {
+        transform: rotateZ(-90deg);
+      }
     }
   }
   &-label {
@@ -47,6 +51,29 @@
     background-color: var(--outer-space);
     padding: 20px;
     border-radius: 0 0 4px 4px;
+  }
+  &-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 8px;
+    float: right;
+    background-color: $bg-dark;
+    border-radius: 4px;
+    font-size: 13px;
+    color: $lightGrey;
+    cursor: pointer;
+    span {
+      width: 13px;
+      height: 13px;
+      margin-right: 4px;
+      background-color: $lightGrey;
+    }
+    &:hover {
+      color: #fff;
+      background-color: var(--electro-mag);
+      border-color: var(--orchid);
+    }
   }
 }
 

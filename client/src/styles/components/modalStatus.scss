@@ -1,0 +1,51 @@
+@keyframes floatToTop {
+  from {
+    opacity: 0;
+    top: calc(100% + 20px);
+  }
+  to {
+    opacity: 1;
+    top: calc(100% + 4px);
+  }
+}
+
+.modal-status {
+  width: 158px;
+  position: absolute;
+  top: calc(100% + 4px);
+  z-index: 1000;
+  padding: 8px 0;
+  background-color: #313a43;
+  border: 1px solid #3e4851;
+  border-radius: 4px;
+  color: var(--gull-gray);
+  animation: floatToTop 0.3s;
+  .status-option {
+    cursor: pointer;
+    padding: 8px 24px;
+    font-weight: 400;
+    &:hover {
+      color: #ecedee;
+      text-decoration: none;
+      background-color: $bg-dark;
+    }
+  }
+  &-wrapper {
+    position: relative;
+    .current-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      color: var(--gull-gray);
+      font-size: 15px;
+      cursor: pointer;
+      span.icon-arrow-down {
+        width: 8px;
+        height: 8px;
+        margin-left: 8px;
+        background-color: var(--gull-gray);
+      }
+    }
+  }
+}

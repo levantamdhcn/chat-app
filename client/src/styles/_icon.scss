@@ -10,6 +10,17 @@
   mask-position: center;
   mask-size: cover;
 }
+
+.active {
+  background-color: $active;
+}
+.warning {
+  background-color: var(--warn-golden);
+}
+.not-available {
+  background-color: var(--gull-gray);
+}
+
 .icon {
   &-add-user {
     mask-image: url("../assets/_icon/add-user.svg");
@@ -65,6 +76,9 @@
   &-more {
     mask-image: url("../assets/_icon/more.svg");
   }
+  &-more-md {
+    mask-image: url("../assets/_icon/more-md.svg");
+  }
   &-mute {
     mask-image: url("../assets/_icon/mute.svg");
   }
@@ -97,5 +111,11 @@
   }
   &-circle-outline {
     mask-image: url("../assets/_icon/circle-outline.svg");
+  }
+  &-pencil {
+    mask-image: url("../assets/_icon/pencil.svg");
+  }
+  &-emoji {
+    mask-image: url("../assets/_icon/emoji.svg");
   }
 }
