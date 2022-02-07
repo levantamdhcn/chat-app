@@ -12,6 +12,9 @@ const Settings = () => {
   const [currentStatus, setCurrentStatus] = useState('Available')
   return (
     <div className='settings'>
+      <div className="tab-content-header">
+        <h1 className="title">Settings</h1>
+      </div>
       <div className="profile-top">
         <div className="avatar">
             <img src={Avatar} alt="avatar" />

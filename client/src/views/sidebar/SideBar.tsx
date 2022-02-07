@@ -19,12 +19,7 @@ const SideBar = () => {
           setCurrenTab={setCurrentTab}
         />
         <div className="tab-content-wrapper scroll-wrapper">
-          <div className="tab-content-header">
-            <h1 className="title">{title}</h1>
-            <div className="tab-content-actions">
-              {headerActionIcon}
-            </div>
-          </div>
+
           {children}
         </div>
         <ChatBox />

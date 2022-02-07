@@ -17,6 +17,9 @@ const settings = {
 const Chat = () => {
   return (
     <div className="chat">
+        <div className="tab-content-header">
+            <h1 className="title">Chat</h1>
+        </div>
         <div className="chat-top">
             <Search placeholder='Search messages or users'/>
         </div>
