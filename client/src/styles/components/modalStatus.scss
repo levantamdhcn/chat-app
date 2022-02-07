@@ -1,14 +1,3 @@
-@keyframes floatToTop {
-  from {
-    opacity: 0;
-    top: calc(100% + 20px);
-  }
-  to {
-    opacity: 1;
-    top: calc(100% + 4px);
-  }
-}
-
 .modal-status {
   width: 158px;
   position: absolute;
@@ -20,16 +9,6 @@
   border-radius: 4px;
   color: var(--gull-gray);
   animation: floatToTop 0.3s;
-  .status-option {
-    cursor: pointer;
-    padding: 8px 24px;
-    font-weight: 400;
-    &:hover {
-      color: #ecedee;
-      text-decoration: none;
-      background-color: $bg-dark;
-    }
-  }
   &-wrapper {
     position: relative;
     .current-status {
@@ -47,5 +26,17 @@
         background-color: var(--gull-gray);
       }
     }
+  }
+}
+
+.status-option {
+  cursor: pointer;
+  padding: 8px 24px;
+  font-weight: 400;
+  color: var(--gull-gray);
+  &:hover {
+    color: #ecedee;
+    text-decoration: none;
+    background-color: $bg-dark;
   }
 }

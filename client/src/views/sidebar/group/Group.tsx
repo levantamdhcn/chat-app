@@ -1,4 +1,6 @@
 import React from 'react';
+import ModalWrapper from '../../../components/ModalWrapper/ModalWrapper';
+import CreateGroup from './CreateGroup/CreateGroup';
 
 interface GroupProps {
     name: string,

@@ -1,6 +1,24 @@
 .profile {
   width: 100%;
   background-color: $bg-gray-dark;
+  .tab-content-header {
+    padding: 24px 24px 0 24px;
+  }
+  .tab-content-actions {
+    position: relative;
+    .profile-actions {
+      position: absolute;
+      top: calc(100% + 5px);
+      right: 0;
+      width: 160px;
+      padding: 8px 0;
+      background-color: #313a43;
+      border: 1px solid #3e4851;
+      border-radius: 4px;
+      z-index: 1000;
+      animation: floatToTop 0.3s;
+    }
+  }
 }
 
 .profile-top {
@@ -31,8 +49,6 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      span.icon-pencil {
-      }
     }
   }
   .username {

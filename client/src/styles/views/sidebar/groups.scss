@@ -41,3 +41,43 @@
     }
   }
 }
+
+.create-group-modal {
+  label {
+    width: 100%;
+    display: block;
+  }
+  .toggle-accordion-btn {
+    button {
+      cursor: pointer;
+      padding: 6px 8px;
+      color: $lightGrey;
+      font-size: 13px;
+      font-weight: 400;
+      background-color: $bg-dark;
+      border: 1px solid $bg-dark;
+      border-radius: 4px;
+      line-height: 19px;
+    }
+  }
+  .group-desc {
+    width: 100%;
+    padding: 8px 16px;
+    background-color: var(--clay-dark);
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid $bg-dark;
+    color: var(--gull-gray);
+    &::placeholder {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--gull-gray);
+      font-family: "Public Sans";
+    }
+  }
+}
+
+.group {
+  &-name {
+  }
+}
