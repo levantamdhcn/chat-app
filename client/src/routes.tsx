@@ -1,5 +1,7 @@
 import { Switch, Route } from 'react-router-dom'
+import AuthLayout from './layouts/AuthLayout'
 import MainLayout from './layouts/MainLayout/index'
+import Login from './views/auth/Login/Login'
 import TabContent from './views/sidebar'
 
 interface route {
@@ -48,6 +50,12 @@ const routers = [
         path: "/",
         layout: MainLayout,
         component: TabContent,
+    },
+    {
+        exact: true,
+        path: "/login",
+        layout: AuthLayout,
+        component: Login
     }
 ] 
 
