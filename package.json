@@ -1,8 +1,15 @@
 {
   "dependencies": {
+    "@types/react-router": "^5.1.18",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/react-slick": "^0.23.8",
+    "@types/sass": "^1.43.1",
+    "react-router-dom": "5.1.2",
+    "react-slick": "^0.28.1",
     "yarn": "^1.22.17"
   },
   "devDependencies": {
-    "@types/react": "^17.0.38"
+    "@types/react": "^17.0.38",
+    "sass": "^1.49.0"
   }
 }

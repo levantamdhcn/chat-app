@@ -1,0 +1,84 @@
+@keyframes floatToBottom {
+  from {
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  to {
+    opacity: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+.modal-bg {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #000;
+  opacity: 0.5;
+  animation: appear 0.3s;
+}
+
+.modal {
+  &-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  &-content {
+    display: inline-block;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: floatToBottom 0.3s;
+    border-radius: 4px;
+  }
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--corn-flower-blue);
+    padding: 16px;
+    border-bottom: 1px solid $bg-dark;
+    border-radius: 4px 4px 0 0;
+    &-title {
+      font-size: 18px;
+      text-transform: capitalize;
+      color: $lightGrey;
+      font-weight: 600;
+    }
+    &-action {
+      cursor: pointer;
+    }
+  }
+  &-body {
+    padding: 24px;
+    background-color: var(--corn-flower-blue);
+  }
+  &-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 12px;
+    background-color: var(--corn-flower-blue);
+    border-top: 1px solid $bg-dark;
+    border-radius: 0 0 4px 4px;
+  }
+}
