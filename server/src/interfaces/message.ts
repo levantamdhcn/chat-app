@@ -1,6 +1,7 @@
-import { Schema } from "mongoose";
+import { ObjectId, Schema } from "mongoose";
 
 export interface IMessage {
+    _id: ObjectId;
     fromUser: Schema.Types.ObjectId;
     toUser: Schema.Types.ObjectId;
     type: string;

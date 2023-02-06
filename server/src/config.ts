@@ -11,6 +11,6 @@ export default {
         SECRET_KEY: process.env.SECRET_KEY,
     },
     MONGO_URL: {
-        String: process.env.MONGO_URL || "mongodb+srv://tamlv:lvtann11@tamcluster.tbpamkt.mongodb.net/test",
+        String: process.env.MONGO_URL || "",
     }
 }

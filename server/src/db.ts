@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import config from "./config";
 const CONNECT = async (): Promise<object> => {
+  console.log("config.MONGO_URL.String", config.MONGO_URL.String);
   return new Promise((resolve, reject) => {
     mongoose.Promise = global.Promise;
     mongoose.set('debug', false); //debug

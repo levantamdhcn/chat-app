@@ -2,6 +2,10 @@ import mongoose, { Schema } from "mongoose";
 import { ETypes, IMessage } from "../interfaces/message";
 
 const messageSchema = new mongoose.Schema<IMessage>({
+  _id: {
+    type: Schema.Types.ObjectId,
+    auto: true,
+  },
   fromUser: {
     type: Schema.Types.ObjectId,
     required: true,

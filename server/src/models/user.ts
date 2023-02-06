@@ -1,8 +1,13 @@
 import mongoose from "mongoose";
 import validator from "validator";
-import { IUser, roles } from "../interfaces/user";
+import { CreatedUser, IUser, roles } from "../interfaces/user";
+import bcrypt from "bcrypt";
 
-const userSchema = new mongoose.Schema<IUser>({
+const userSchema = new mongoose.Schema<CreatedUser>({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    auto: true,
+  },
   firstName: {
     type: String,
     required: true,
@@ -40,6 +45,31 @@ const userSchema = new mongoose.Schema<IUser>({
   }
 });
 
-const User = mongoose.model<IUser>("User", userSchema);
+// Don't expose password and other variables via API endpoints
+userSchema.set("toJSON", {
+  virtuals: true,
+  transform: (doc, ret, opt) => {
+    delete ret["password"];
+    delete ret["_id"];
+    delete ret["__v"];
+    return ret;
+  },
+});
+
+// Before saving new user, hash the password with salt
+userSchema.pre("save", function (next) {
+  // Hash the password with a salt
+  const hash = bcrypt.hashSync(this.password, bcrypt.genSaltSync(8));
+  this.password = hash;
+
+  next();
+});
+
+// Checks if password is valid
+userSchema.methods.validPassword = function (password: string) {
+  return bcrypt.compareSync(password, this.password);
+};
+
+const User = mongoose.model<CreatedUser>("User", userSchema);
 
 export default User;
