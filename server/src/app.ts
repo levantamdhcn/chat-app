@@ -26,6 +26,8 @@ if(config.env.APP_PORT) {
 
 const httpServer = http.createServer(server.app);
 
+server.app.use(express.static("public"));
+
 db()
   .then((info: any) => {
     console.log(`Connected ${info.name} database`);

@@ -4,31 +4,13 @@ import { CreatedUser, IUser } from "../../interfaces/user";
 import User from "../../models/user";
 import IUserService from "../../services/user";
 import mongoose from "mongoose";
+import config from "../../config";
 
 @Route("user")
 class UserController implements IUserService {
   constructor() {
     
   }
-
-  @Post()
-  public async create(@Body() user: IUser) {
-    try {
-      const u = await User.find({ email: user.email });
-      if (u) {
-        throw new Error("User with this email is exist!");
-      };
-
-      const newUser = User.create({
-        ...user,
-        email: user.email.toLowerCase(),
-      });
-
-      return newUser;
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   @Get()
   public async get() {

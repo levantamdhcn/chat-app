@@ -7,7 +7,7 @@ const options: swaggerJsDocs.Options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "CHAT APP API Docs",
+      title: "CHAT-APP API Docs",
       version: "1.0.0"
     },
     components: {
@@ -31,12 +31,12 @@ const options: swaggerJsDocs.Options = {
 
 const swaggerSpec = swaggerJsDocs(options);
 
-export default function swaggerDocs(app: Express, port: string) {
+export default function   swaggerDocs(app: Express, port: string) {
     //Swagger page
     app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
     //Docs in JSON format
-    app.get("docs.json", (req: Request, res: Response)=> {
+    app.get("/public/swagger.json", (req: Request, res: Response)=> {
         res.setHeader("Content-Type", "application/json");
         res.send(swaggerSpec);
     });

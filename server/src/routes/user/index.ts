@@ -25,7 +25,7 @@ class User {
         res.status(400).json({ message: "Error when get users"});
       }
     })
-  }
+  };
 };
 
 export = new User().router;

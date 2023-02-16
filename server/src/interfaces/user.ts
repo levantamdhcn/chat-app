@@ -5,9 +5,10 @@ export interface IUser {
   lastName: string;
   email: string;
   password: string;
-  avatar: string;
+  avatar?: string;
   isEmailVerified: boolean;
   role: string;
+  reset_password_token: string
 }
 
 export enum roles {

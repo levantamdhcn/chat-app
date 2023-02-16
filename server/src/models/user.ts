@@ -2,8 +2,19 @@ import mongoose from "mongoose";
 import validator from "validator";
 import { CreatedUser, IUser, roles } from "../interfaces/user";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import config from "../config";
 
-const userSchema = new mongoose.Schema<CreatedUser>({
+// Put all user instance methods in this interface:
+export interface IUserMethods {
+  validPassword(password: string): boolean;
+  generateJWT(): string;
+}
+
+// Create a new Model type that knows about IUserMethods...
+type UserModel = mongoose.Model<IUser, {}, IUserMethods>;
+
+const userSchema = new mongoose.Schema<CreatedUser, UserModel>({
   _id: {
     type: mongoose.Schema.Types.ObjectId,
     auto: true,
@@ -15,6 +26,9 @@ const userSchema = new mongoose.Schema<CreatedUser>({
   lastName: {
     type: String,
     required: true,
+  },
+  avatar: {
+    type: String,
   },
   email: {
     type: String,
@@ -42,6 +56,9 @@ const userSchema = new mongoose.Schema<CreatedUser>({
     type: String,
     default: "user",
     enum: roles,
+  },
+  reset_password_token: {
+    type: String,
   }
 });
 
@@ -70,6 +87,24 @@ userSchema.methods.validPassword = function (password: string) {
   return bcrypt.compareSync(password, this.password);
 };
 
-const User = mongoose.model<CreatedUser>("User", userSchema);
+userSchema.methods.generateJWT = function() {
+  const today = new Date();
+  const expirationDate = new Date(today);
+  expirationDate.setDate(today.getDate() + 60);
+
+  let payload = {
+    id: this._id,
+    email: this.email,
+    username: this.username,
+    firstName: this.firstName,
+    lastName: this.lastName,
+  };
+
+  return jwt.sign(payload, config.env.SECRET_KEY, {
+    expiresIn: parseInt((expirationDate.getTime() / 1000).toString(), 10)
+  });
+};
+
+const User = mongoose.model<CreatedUser, UserModel>("User", userSchema);
 
 export default User;
