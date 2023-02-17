@@ -3,7 +3,7 @@ import { unlinkSync } from "fs";
 import { ICloudinary, ICloudinaryResponse } from "src/interfaces/Cloudinary";
 import config from "../../config";
 
-const { CLOUD_NAME, API_KEY, API_SECRET, FOLDER_NAME } = config.CLOUDINARY;
+const { CLOUD_NAME, API_KEY, API_SECRET } = config.CLOUDINARY;
 
 export class Cloudinary implements ICloudinary {
   constructor() {
@@ -14,10 +14,10 @@ export class Cloudinary implements ICloudinary {
     })
   }
 
-  uploadImage = async (imageToUpload: string): Promise<ICloudinaryResponse> => {
+  uploadImage = async (imageToUpload: string, folder: string): Promise<ICloudinaryResponse> => {
     try {
       const response = await cloudinary.uploader.upload(imageToUpload, {
-        public_id: FOLDER_NAME
+        folder: folder
       });
 
       const { url } = response;

@@ -29,7 +29,13 @@
 					"role": {
 						"type": "string"
 					},
+					"status": {
+						"type": "string"
+					},
 					"reset_password_token": {
+						"type": "string"
+					},
+					"confirmationCode": {
 						"type": "string"
 					}
 				},
@@ -40,7 +46,9 @@
 					"password",
 					"isEmailVerified",
 					"role",
-					"reset_password_token"
+					"status",
+					"reset_password_token",
+					"confirmationCode"
 				],
 				"type": "object",
 				"additionalProperties": false

@@ -1,6 +1,10 @@
-import { IUser } from "src/interfaces/user";
-import { Post, Body} from "tsoa";
+import { IUser, status } from "../../interfaces/user";
+import { Post, Body, Inject, Get } from "tsoa";
 import USER from "../../models/user";
+import jwt from "jsonwebtoken";
+import config from "../../config";
+import { sendConfirmationEmail } from "../../utils/nodemailer";
+import { cloudinaryInstance } from "../../utils/cloudinary";
 
 class AuthController {
     constructor() {
@@ -8,19 +12,24 @@ class AuthController {
     };
 
     @Post("/registration")
-    public async registration(@Body() user: IUser) {
+    public async registration(@Body() user: IUser, @Inject() localFilePath: string) {
       try {
-        const u = await USER.findOne({ email: user.email });
-        if (u) {
-          throw new Error("User with this email is exist!");
-        };
-
+        const token = jwt.sign({email: user.email}, config.env.SECRET_KEY);
         const newUser = new USER({
           ...user,
           email: user.email.toLowerCase(),
+          confirmationCode: token,
         });
+
+        const cloudPath = `${config.CLOUDINARY.FOLDER_NAME}/${newUser.email}`;
+        const { isSuccess, imageURL } = await cloudinaryInstance.uploadImage(localFilePath, cloudPath);
+        if (isSuccess) {
+          newUser.avatar = imageURL;
+        };
         
         let createdUser = await newUser.save();
+
+        await sendConfirmationEmail(`${newUser.firstName} ${newUser.lastName}`, newUser.email, newUser.confirmationCode);
 
         return {
           token: createdUser.generateJWT(),
@@ -45,6 +54,10 @@ class AuthController {
           throw new Error("Invalid password!");
         };
 
+        if (u.status != status.active) {
+         throw new Error("Pending Account. Please Verify Your Email!");
+        }
+
         return {
           token: u.generateJWT(),
           user: u
@@ -53,6 +66,22 @@ class AuthController {
         console.log(error);
       }
     };
+
+    @Get("/confirm/:confirmationCode")
+    public async verifyUser(@Inject() confirmationCode: string) {
+      let u = await USER.findOne({
+        confirmationCode: confirmationCode,
+      });
+
+      if(!u) {
+        throw new Error("User Not found.");
+      };
+
+      u.status = status.active;
+      await u.save();
+
+      return u;
+    }
 };
 
 export default new AuthController();

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import validator from "validator";
-import { CreatedUser, IUser, roles } from "../interfaces/user";
+import { CreatedUser, IUser, roles, status } from "../interfaces/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../config";
@@ -52,10 +52,19 @@ const userSchema = new mongoose.Schema<CreatedUser, UserModel>({
       }
     },
   },
+  status: {
+    type: String,
+    default: status.inactive,
+    enum: status,
+  },
   role: {
     type: String,
     default: "user",
     enum: roles,
+  },
+  confirmationCode: { 
+    type: String, 
+    unique: true 
   },
   reset_password_token: {
     type: String,
@@ -66,6 +75,7 @@ const userSchema = new mongoose.Schema<CreatedUser, UserModel>({
 userSchema.set("toJSON", {
   virtuals: true,
   transform: (doc, ret, opt) => {
+    delete ret["confirmationCode"];
     delete ret["password"];
     delete ret["_id"];
     delete ret["__v"];

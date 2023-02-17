@@ -5,5 +5,5 @@ export interface ICloudinaryResponse extends IResponse {
 }
 
 export interface ICloudinary {
-  uploadImage: (imageToUpload: string) => Promise<ICloudinaryResponse>;
+  uploadImage: (imageToUpload: string, folder: string) => Promise<ICloudinaryResponse>;
 }

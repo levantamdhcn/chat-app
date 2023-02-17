@@ -19,5 +19,9 @@ export default {
     API_SECRET: process.env.CLOUD_API_SECRET,
     FOLDER_NAME: process.env.CLOUD_FOLDER_NAME,
   },
+  OUTLOOK: {
+    USER: process.env.MAIL_USER,
+    PASSWORD: process.env.MAIL_PASSWORD,
+  },
   hostname: "http://localhost:3015"
 }
