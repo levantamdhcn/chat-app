@@ -16,8 +16,8 @@ const conversationSchema = new mongoose.Schema<IConversation>({
         ref: "User",
     }
   ]
-});
+}, { timestamps: true });
 
-const Message = mongoose.model<IConversation>("Conversation", conversationSchema);
+const Conversation = mongoose.model<IConversation>("Conversation", conversationSchema);
 
-export default Message;
+export default Conversation;

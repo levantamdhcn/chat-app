@@ -69,7 +69,7 @@ const userSchema = new mongoose.Schema<CreatedUser, UserModel>({
   reset_password_token: {
     type: String,
   }
-});
+}, { timestamps: true });
 
 // Don't expose password and other variables via API endpoints
 userSchema.set("toJSON", {

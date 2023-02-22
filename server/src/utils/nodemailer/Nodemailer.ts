@@ -18,7 +18,7 @@ const sendConfirmationEmail = async (name: string, email: string, confirmationCo
       html: `<h1>Email Confirmation</h1>
           <h2>Hello ${name}</h2>
           <p>Thank you for subscribing. Please confirm your email by clicking on the following link</p>
-          <a href=http://localhost:8081/confirm/${confirmationCode}> Click here</a>
+          <a href=${config.hostname}/api/auth/confirm/${confirmationCode}> Click here</a>
           </div>`,
     });
   } catch (error) {

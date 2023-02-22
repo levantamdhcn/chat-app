@@ -17,9 +17,10 @@ const conversationMemberSchema = new mongoose.Schema<IConversationMember>({
   },
   active: {
     type: Boolean,
+    default: true,
   }
-});
+}, { timestamps: true });
 
-const Message = mongoose.model<IConversationMember>("ConversationMember", conversationMemberSchema);
+const ConversationMember = mongoose.model<IConversationMember>("ConversationMember", conversationMemberSchema);
 
-export default Message;
+export default ConversationMember;

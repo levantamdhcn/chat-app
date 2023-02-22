@@ -27,8 +27,8 @@ const messageSchema = new mongoose.Schema<IMessage>({
   },
   conversationId: {
     type: Schema.Types.ObjectId,
-  }
-});
+  },
+}, { timestamps: true });
 
 const Message = mongoose.model<IMessage>("Message", messageSchema);
 

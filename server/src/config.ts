@@ -7,7 +7,7 @@ dotenv.config({
 export default {
   env: {
     NODE_ENV: process.env.NODE_ENV,
-    APP_PORT: process.env.APP_PORT,
+    APP_PORT: process.env.PORT,
     SECRET_KEY: process.env.SECRET_KEY || "",
   },
   MONGO_URL: {
