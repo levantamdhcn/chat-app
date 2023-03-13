@@ -1,16 +1,26 @@
-import { Router } from "react-router-dom";
-import { createBrowserHistory, History } from "history";
 import routers, { renderRoutes } from "./routes";
+import { BrowserRouter as Router } from "react-router-dom";
 
 import "./index.css";
 import "./styles/index.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-const history: History = createBrowserHistory();
+import { Provider, useDispatch } from "react-redux";
+import { AppDispatch, store } from "./configuration/store";
+import { useEffect } from "react";
+import { initialise } from "./store/reducers/auth";
 
 const App = () => {
-  return <Router history={history}>{renderRoutes(routers)}</Router>;
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if(token){
+      dispatch(initialise({ token }));
+    };
+  }, [dispatch]);
+  return (
+    <Router>{renderRoutes(routers)}</Router>
+  );
 };
 
 export default App;

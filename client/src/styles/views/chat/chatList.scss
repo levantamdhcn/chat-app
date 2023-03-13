@@ -1,0 +1,46 @@
+.chatList-content {
+  padding: 24px;
+}
+
+.messageList {
+  display: flex;
+  flex-direction: column;
+  li {
+    &:not(:first-child) {
+      margin-top: 16px;
+    }
+    color: $white;
+    display: flex;
+    align-items: end;
+    p {
+      background-color: $bg-dark;
+      border-radius: 20px;
+      padding: 8px 12px;
+      color: $textColorDark;
+    }
+    &.right {
+      p {
+        background-color: $mainColor;
+      }
+      justify-content: flex-end;
+    }
+  }
+  .member-name {
+    margin-left: 10px;
+    font-size: 12px;
+    font-weight: 400;
+    color: $textColorSmallDark;
+  }
+  .member-avatar {
+    img {
+      width: 35.2px;
+      height: 35.2px;
+      border-radius: 50%;
+    }
+  }
+}
+.message-content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

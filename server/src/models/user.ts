@@ -7,7 +7,7 @@ import config from "../config";
 
 // Put all user instance methods in this interface:
 export interface IUserMethods {
-  validPassword(password: string): boolean;
+  validPassword(password: string): Promise<any>;
   generateJWT(): string;
 }
 
@@ -86,15 +86,18 @@ userSchema.set("toJSON", {
 // Before saving new user, hash the password with salt
 userSchema.pre("save", function (next) {
   // Hash the password with a salt
+  console.log("this.password", this.password);
   const hash = bcrypt.hashSync(this.password, bcrypt.genSaltSync(8));
   this.password = hash;
-
+  console.log(">>>>this.password", this.password);
   next();
 });
 
 // Checks if password is valid
-userSchema.methods.validPassword = function (password: string) {
-  return bcrypt.compareSync(password, this.password);
+userSchema.methods.validPassword = async function (password: string) {
+  console.log('password', password);
+  console.log('this.password', (this as any).password);
+  return await bcrypt.compare(password.toString(), this.password);
 };
 
 userSchema.methods.generateJWT = function() {

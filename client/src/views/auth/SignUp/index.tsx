@@ -3,10 +3,27 @@ import InputCheckbox from "../../../components/Form/InputCheckbox";
 import InputPassword from "../../../components/Form/InputPassword";
 import InputText from "../../../components/Form/InputText";
 
+export interface SignupInput {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
 const Signup = () => {
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [data, setData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  })
+
+  const setField = (field: string,  value: string) => {
+    setData({
+      ...data,
+      [field]: value
+    })
+  }
 
   return (
     <div className="login">
@@ -18,29 +35,38 @@ const Signup = () => {
         <InputText
           label="Email"
           placeholder="Enter Email"
-          value={email}
-          setValue={setEmail}
+          value={data.email}
+          setValue={(e) => setField("email", e.target.value)}
         />
         <InputText
-          label="Username"
-          placeholder="Enter Username"
-          value={username}
-          setValue={setUsername}
+          label="First name"
+          placeholder="Enter first name"
+          value={data.firstName}
+          setValue={(e) => setField("firstName", e.target.value)}
+        />
+        <InputText
+          label="Last name"
+          placeholder="Enter last name"
+          value={data.lastName}
+          setValue={(e) => setField("lastName", e.target.value)}
         />
         <InputPassword
           label="Password"
           placeholder="Enter Password"
-          value={password}
-          setValue={setPassword}
+          value={data.password}
+          setValue={(e) => setField("password", e.target.value)}
         />
         <InputCheckbox onChange={() => {}} label={"Remember me"} />
 
         <button className="mt-4 main-btn w-full rounded py-3">Sign up</button>
         <div className="mt-12">
-          <span className="text-muted text-base">By registering you agree to the Chatvia</span>
+          <span className="text-muted text-base">
+            By registering you agree to the Chatvia
+          </span>
           <span>
             <a href="/register" className="text-main">
-            {" "}Terms of Use
+              {" "}
+              Terms of Use
             </a>
           </span>
         </div>

@@ -3,6 +3,7 @@ import authController from "../../controllers/auth";
 import { multerUpload } from "../../utils/multer";
 import { cloudinaryInstance } from "../../utils/cloudinary";
 import User from "../../models/user";
+import { authMiddleware } from "../../middlewares";
 
 class Auth {
   private rout = Router();

@@ -1,11 +1,8 @@
-import React, { ReactElement } from "react";
+import React from "react";
+import { Outlet } from "react-router-dom";
 import Logo from "../../assets/_icon/logo.svg";
 
-interface AuthLayoutProp {
-  children: ReactElement;
-}
-
-const AuthLayout = ({ children }: AuthLayoutProp) => {
+const AuthLayout = () => {
   return (
     <div className="authorization-layout my-9 sm:pt-9 bg-body-dark">
       <div className="container mx-auto">
@@ -17,7 +14,7 @@ const AuthLayout = ({ children }: AuthLayoutProp) => {
                 <span className="font-bold text-2xl ml-2 text-grey-700">Chatvia</span>
               </div>
             </div>
-            <div className="authorization-content">{children}</div>
+            <div className="authorization-content"><Outlet /></div>
           </div>
         </div>
       </div>

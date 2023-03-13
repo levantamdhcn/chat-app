@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
-import cors from "cors";
+var cors = require('cors')
 import http from "http";
 import swaggerUi from "swagger-ui-express";
 import config from "./config";
@@ -8,6 +8,8 @@ import ErrorHandler from './interfaces/ErrorHandler';
 import MasterRouter from "./routes/index";
 import swaggerDocs from "./swagger";
 
+import "./passportHanlders";
+
 class Server {
   public app = express();
   public router = MasterRouter;
@@ -15,12 +17,12 @@ class Server {
 
 const server = new Server();
 
+server.app.use(cors());
 server.app.use(express.json({ limit: '50mb' }));
 server.app.use(express.urlencoded({ extended: false, limit: '50mb' }));
-server.app.use(cors());
 server.app.use("/api", server.router);
 
-if(config.env.APP_PORT) {
+if (config.env.APP_PORT) {
   swaggerDocs(server.app, config.env.APP_PORT);
 };
 
@@ -38,6 +40,13 @@ db()
     console.error(`Error ${err.message}`);
     process.exit(1);
   });
+
+server.app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
 
 server.app.use(
   (err: ErrorHandler, req: Request, res: Response, next: NextFunction) => {

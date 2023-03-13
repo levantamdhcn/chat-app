@@ -50,7 +50,9 @@ class AuthController {
         const u = await USER.findOne({ email });
         if(!u) throw new Error(`User with email ${email} is not exist`);
 
-        if(!u.validPassword(password)) {
+        const validPassword = await u.validPassword(password);
+        console.log("validPassword", validPassword);
+        if(!validPassword) {
           throw new Error("Invalid password!");
         };
 
@@ -77,10 +79,11 @@ class AuthController {
         throw new Error("User Not found.");
       };
 
-      u.status = status.active;
-      await u.save();
+      let updatedU = await USER.findByIdAndUpdate(u._id, {
+        status: status.active,
+      }, { new: true });
 
-      return u;
+      return updatedU;
     }
 };
 

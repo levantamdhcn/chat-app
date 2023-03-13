@@ -1,6 +1,6 @@
 import { PassportStatic } from "passport";
 import passportJwt from "passport-jwt";
-import config from "src/config";
+import config from "../../config";
 import USER from "../../models/user";
 
 const JwtStrategy = passportJwt.Strategy;
