@@ -8,7 +8,7 @@ import { cloudinaryInstance } from "../../utils/cloudinary";
 
 class AuthController {
     constructor() {
-
+      
     };
 
     @Post("/registration")

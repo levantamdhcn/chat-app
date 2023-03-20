@@ -2,6 +2,7 @@ import swaggerJsDocs from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
 import { Express } from "express-serve-static-core";
 import { Request, Response } from "express";
+import useRoute from "../routes/auth"
 
 const options: swaggerJsDocs.Options = {
   definition: {
@@ -19,14 +20,15 @@ const options: swaggerJsDocs.Options = {
         },
       },
     },
+    basePath: "/api",
+    schemes: ["http", "https"],
     security: [
       {
         bearerAuth: [],
-
       }
     ]
   },
-  apis: ['./src/routes/*.ts', './src/interfaces/*.ts']
+  apis: ['../routes/auth/index.ts', '../src/interfaces/user.ts']
 };
 
 const swaggerSpec = swaggerJsDocs(options);

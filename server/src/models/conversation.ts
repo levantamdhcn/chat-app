@@ -10,6 +10,12 @@ const conversationSchema = new mongoose.Schema<IConversation>({
     type: String,
     required: true,
   },
+  messages: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Message",
+  }
+  ],
   members: [
     {
         type: Schema.Types.ObjectId,

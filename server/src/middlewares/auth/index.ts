@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import passport from "passport";
 import { IUser } from "src/interfaces/user";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../../config";
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
@@ -24,4 +24,16 @@ const generateJWT = (payload: IUser) => {
   });
 };
 
-export { authMiddleware, generateJWT };
+const verifyAccessToken = async (token: string): Promise<{ id: string }> => {
+  const tokenData = await jwt.verify(token, config.env.SECRET_KEY);
+  // @ts-ignore
+  return { id: tokenData.id };
+}
+
+const verifyRefreshToken = (token: string): Promise<{ id: string }> => {
+  const tokenData = jwt.verify(token, config.env.SECRET_KEY);
+  // @ts-ignore
+  return { id: tokenData.id };
+}
+
+export { authMiddleware, generateJWT, verifyAccessToken, verifyRefreshToken };

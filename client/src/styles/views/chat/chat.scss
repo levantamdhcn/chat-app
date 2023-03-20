@@ -92,14 +92,18 @@
           opacity: 0.8;
         }
       }
-
-      //Emoji styles custom
-      .EmojiPickerReact {
-        &.epr-main {
-          position: absolute;
-          bottom: 77px;
-        }
+      .emoji-outside-custom {
+        position: absolute;
+        bottom: 77px;
       }
+
+      // //Emoji styles custom
+      // .EmojiPickerReact {
+      //   &.epr-main {
+      //     position: absolute;
+      //     bottom: 77px;
+      //   }
+      // }
       &:not(:last-child) {
         margin-right: 8px;
       }

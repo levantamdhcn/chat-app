@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import InputCheckbox from "../../../components/Form/InputCheckbox";
 import InputPassword from "../../../components/Form/InputPassword";
 import InputText from "../../../components/Form/InputText";
 import LoadingScreen from "../../../components/LoadingScreen";
 import { AppDispatch } from "../../../configuration/store";
+import useAuth from "../../../hooks/useAuth";
 import { login } from "../../../store/reducers/auth";
-import { authSelector } from "../../../store/reducers/auth/selectors";
 
 export interface SigninInput {
   email: string;
@@ -23,7 +23,7 @@ const Login = () => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const { isFetching, isSuccess, isError } = useSelector(authSelector).auth;
+  const { isFetching, isSuccess, isError } = useAuth();
 
   const navigate = useNavigate();
 

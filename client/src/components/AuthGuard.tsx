@@ -1,10 +1,9 @@
-import { useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { authSelector } from "../store/reducers/auth/selectors";
+import useAuth from "../hooks/useAuth";
 import LoadingScreen from "./LoadingScreen";
 
 const AuthGuard = ({ allowedRoles }: { allowedRoles: string[] }) => {
-  const { isAuthenticated, user, isFetching } = useSelector(authSelector).auth;
+  const { isAuthenticated, user, isFetching } = useAuth();
 
   const location = useLocation();
 

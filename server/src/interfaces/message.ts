@@ -9,6 +9,14 @@ export interface IMessage {
     conversationId: Schema.Types.ObjectId;
 }
 
+export type IMessageSend = {
+    fromUser: string;
+    toUser: string;
+    type: string;
+    messageText: string;
+    conversationId: string;
+}
+
 export enum ETypes {
     text = "text",
     image = "image",

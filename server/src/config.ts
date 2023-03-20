@@ -8,6 +8,7 @@ export default {
   env: {
     NODE_ENV: process.env.NODE_ENV,
     APP_PORT: process.env.PORT,
+    APP_HOST: process.env.HOST,
     SECRET_KEY: process.env.SECRET_KEY || "",
   },
   MONGO_URL: {

@@ -1,27 +1,24 @@
-import React from "react";
-import EmojiPicker from 'emoji-picker-react';
-import { listenForOutsideClicks } from "../../../utils/listenForOutsideClicks";
+import EmojiPicker, { Props as EmojiPickerProps } from "emoji-picker-react";
+import { useRef } from "react";
+import { useOnClickOutside } from "usehooks-ts";
 
-const EmojiPickerCustom = () => {
-  const emojiPickerRef = React.useRef(null);
-  const [listening, setListening] = React.useState(false);
-  const [isOpen, setIsOpen] = React.useState(false);
-  const toggle = () => setIsOpen(!isOpen);
-
-  React.useEffect(() => {
-    listenForOutsideClicks({
-      listening,
-      setListening,
-      ref: emojiPickerRef,
-      setIsOpen,
-    });
-  }, [listening]);
-
-  return (
-    <div ref={emojiPickerRef} className={isOpen ? "open" : "hidden"} onClick={toggle}>
-      <EmojiPicker />
-    </div>
-  );
+interface EmojiPickerCustomProps extends EmojiPickerProps { 
+  toggleOpen: Function
 };
 
-export default EmojiPickerCustom;
+export default function EmojiPickerCustom({ toggleOpen, onEmojiClick }: EmojiPickerCustomProps) {
+  const ref = useRef(null);
+
+  const handleClickOutside = () => {
+    console.log("A");
+    toggleOpen(false);
+  };
+
+  useOnClickOutside(ref, handleClickOutside);
+
+  return (
+    <div ref={ref} className={"emoji-outside-custom"}>
+      <EmojiPicker onEmojiClick={onEmojiClick} />
+    </div>
+  );
+}

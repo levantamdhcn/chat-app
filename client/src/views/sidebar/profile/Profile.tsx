@@ -1,23 +1,17 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import Avatar from "../../../assets/images/avatar.jpg";
 import Accordion from "../../../components/Accordion";
 import ModalWrapper from "../../../components/ModalWrapper/ModalWrapper";
-import { authSelector } from "../../../store/reducers/auth/selectors";
+import useAuth from "../../../hooks/useAuth";
 import About from "./About/About";
 import Attach from "./Attach/Attach";
 import EditUserModal from "./EditUser";
-
-enum status  {
-    active = "Active",
-    inactive = "Inactive"
-}
 
 const Profile = () => {
   const [openAccordion, setOpenAccordion] = useState(null);
   const [openProfileOption, setOpenProfileOption] = useState(false);
   const [openEditUser, setOpenEditUser] = useState(false);
-  const { user } = useSelector(authSelector).auth;
+  const { user } = useAuth();
 
   const handleOpenEditUser = () => {
     setOpenEditUser(true);
