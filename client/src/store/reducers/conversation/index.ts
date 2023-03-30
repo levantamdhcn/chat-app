@@ -58,16 +58,14 @@ export const initialState: IConversationState = {
 export const sendMessage = createAsyncThunk(
   `message`, async ({ data }: { data: MessageInput }, thunkAPI): Promise<IMessage | unknown> => {
     try {
-      return data;
-
       const response = await axios.post(`${BASE_URL}/api/message`, data);
       if (response.data) {
-        const { _id,
-          fromUser,
-          toUser,
-          type,
-          messageText,
-          conversationId } = response.data;
+        // const { _id,
+        //   fromUser,
+        //   toUser,
+        //   type,
+        //   messageText,
+        //   conversationId } = response.data;
 
         return data;
       } else {
