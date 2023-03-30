@@ -65,6 +65,7 @@ export const login = createAsyncThunk(
 
 export const initialise = createAsyncThunk(`auth/initialise`, async ({ token }: { token: string }, thunkAPI) => {
   try {
+    if(!isValidToken(token)) throw new Error("Token is expired");  
     const response = await axios.get(`${BASE_URL}/api/user/currentUser`);
     if (response.data) {
       const user = response.data;
@@ -84,7 +85,7 @@ export const logout = () => {
   clearState();
 }
 
-const isValidToken = (accessToken: string) => {
+export const isValidToken = (accessToken: string) => {
   if (!accessToken) {
     return false;
   }

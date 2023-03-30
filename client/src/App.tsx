@@ -5,8 +5,8 @@ import "./index.css";
 import "./styles/index.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Provider, useDispatch } from "react-redux";
-import { AppDispatch, store } from "./configuration/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "./configuration/store";
 import { useEffect } from "react";
 import { initialise } from "./store/reducers/auth";
 

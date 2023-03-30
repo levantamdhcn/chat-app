@@ -6,9 +6,10 @@ import Cors from 'cors';
 import morgan from 'morgan';
 import { Server } from "socket.io";
 
+import "./passportHanlders";
+import Websocket from "./socket";
 import MasterRouter from "./routes";
 import ErrorHandler from './interfaces/ErrorHandler';
-import Websocket from "./socket";
 import config from './config';
 import db from "./db";
 import { ChatSocket } from './controllers/socket';
@@ -54,12 +55,13 @@ class ServerModule {
     );
 
     this.http = http.createServer(this.app);
-
     this.io = Websocket.getInstance(this.http);
 
     this.io.initializeHandlers([
       { path: '/chat', handler: new ChatSocket() }
     ])
+
+    console.log("onlineUsers", (global as any).onlineUsers);
 
     this.http.listen(
       this.port,

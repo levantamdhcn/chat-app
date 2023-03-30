@@ -8,8 +8,7 @@ import ISocket, { SocketEventsEnum } from "../../interfaces/socket";
 import CONVERSATION from "../../models/conversation";
 import MESSAGE from "../../models/message";
 
-declare var onlineUsers: Map<any, any>;
-
+var onlineUsers: Map<any, any> = new Map<any, any>();
 export class ChatSocket implements ISocket {
 
   handleConnection(socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>): void {
@@ -25,8 +24,6 @@ export class ChatSocket implements ISocket {
 
     socket.on(SocketEventsEnum.MSG_SEND, async (data) => {
       try {
-        console.log("socket", socket);
-        console.log("data", data);
         const messageData: IMessageSend = JSON.parse(data);
         const chatData = {
           sender: socket.data.userId,
@@ -39,7 +36,7 @@ export class ChatSocket implements ISocket {
         const newMsg = new MESSAGE(messageData);
         const savedMsg = await newMsg.save();
 
-        const conversationSocketId = onlineUsers.get(chatData.conversationId);
+        const conversationSocketId = onlineUsers.get('conversationId');
         if (conversationSocketId) {
           socket.to(conversationSocketId).emit(SocketEventsEnum.MSG_RECEIVE, savedMsg);
         };
@@ -82,7 +79,10 @@ export class ChatSocket implements ISocket {
 
       if (!userData) return next(new Error(ErrorEnum.unauthorized));
 
+      onlineUsers.set('userId', userData.id);
+      onlineUsers.set('conversationId', socket.id);
       socket.data.userId = userData.id;
+
       next();
 
     } catch (error: any) {
