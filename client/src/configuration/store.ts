@@ -1,9 +1,14 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { appReducer } from "../store/reducers";
+import socketMiddlerware from "./middlewares/socketMiddlerware";
+import SocketClient from './socketClient';
+
+const socket = new SocketClient()
 
 export const store = configureStore({
   reducer: appReducer,
   devTools: process.env.NODE_ENV === 'development',
+  middleware: [socketMiddlerware(socket), ...getDefaultMiddleware()]
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

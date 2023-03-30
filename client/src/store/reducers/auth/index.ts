@@ -84,15 +84,15 @@ export const logout = () => {
   clearState();
 }
 
-const isValidToken = (accessToken: string) => {
-  if (!accessToken) {
-    return false;
-  }
-  const decoded: any = jwtDecode(accessToken);
-  const currentTime = Date.now() / 1000;
+// const isValidToken = (accessToken: string) => {
+//   if (!accessToken) {
+//     return false;
+//   }
+//   const decoded: any = jwtDecode(accessToken);
+//   const currentTime = Date.now() / 1000;
 
-  return !decoded.exp || decoded.exp > currentTime;
-}
+//   return !decoded.exp || decoded.exp > currentTime;
+// }
 
 
 // const token = localStorage.getItem("accessToken");
