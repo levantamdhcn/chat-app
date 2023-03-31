@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import { IConversationMember } from "../interfaces/conversation";
 
-const conversationMemberSchema = new mongoose.Schema<IConversationMember>({
+const conversationMemberSchema = new mongoose.Schema({
   userId: {
     type: Schema.Types.ObjectId,
     required: true,

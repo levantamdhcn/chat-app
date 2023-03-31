@@ -1,15 +1,15 @@
 import { ObjectId, Schema } from "mongoose"
 
 export interface IConversation {
-    _id: ObjectId;
+    _id: string;
     name: string,
-    messages:   Schema.Types.ObjectId[];
-    members: Schema.Types.ObjectId[];
+    messages: string[];
+    members: string[];
 }
 
 export interface IConversationMember {
-    userId: Schema.Types.ObjectId;
-    conversationId: Schema.Types.ObjectId;
+    userId: string;
+    conversationId: string;
     leftTime: Date;
     active: boolean;
 }

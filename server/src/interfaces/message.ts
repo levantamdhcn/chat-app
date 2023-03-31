@@ -1,12 +1,10 @@
-import { ObjectId, Schema } from "mongoose";
-
 export interface IMessage {
-    _id: ObjectId;
-    fromUser: Schema.Types.ObjectId;
-    toUser: Schema.Types.ObjectId;
+    _id: string;
+    fromUser: string;
+    toUser: string;
     type: string;
     messageText: string;
-    conversationId: Schema.Types.ObjectId;
+    conversationId: string;
 }
 
 export type IMessageSend = {

@@ -1,5 +1,3 @@
-import { Schema } from "mongoose";
-
 export interface IUser {
   firstName: string;
   lastName: string;
@@ -13,6 +11,8 @@ export interface IUser {
   confirmationCode: string;
 }
 
+export type IUserResponse = Omit<CreatedUser, 'password' | 'reset_password_token' | 'confirmationCode'>;
+
 export enum roles {
   user = "user",
   admin = "admin"
@@ -23,5 +23,5 @@ export enum status {
   inactive = "inactive"
 }
 export interface CreatedUser extends IUser {
-  _id: Schema.Types.ObjectId;
+  _id: string;
 }

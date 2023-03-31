@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import { IConversation } from "../interfaces/conversation";
 
-const conversationSchema = new mongoose.Schema<IConversation>({
+const conversationSchema = new mongoose.Schema({
   _id: {
     type: Schema.Types.ObjectId,
     auto: true,

@@ -1,10 +1,8 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
-import * as dotenv from "dotenv";
 import http from "http";
 import bodyParser from 'body-parser';
 import Cors from 'cors';
 import morgan from 'morgan';
-import { Server } from "socket.io";
 
 import MasterRouter from "./routes";
 import ErrorHandler from './interfaces/ErrorHandler';
@@ -12,6 +10,7 @@ import Websocket from "./socket";
 import config from './config';
 import db from "./db";
 import { ChatSocket } from './controllers/socket';
+import swaggerDocs from './swagger';
 
 class ServerModule {
   public host;
@@ -52,6 +51,10 @@ class ServerModule {
         });
       },
     );
+
+    if (config.env.APP_PORT) {
+      swaggerDocs(this.app, config.env.APP_PORT);
+    };
 
     this.http = http.createServer(this.app);
 

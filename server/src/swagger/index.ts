@@ -2,40 +2,43 @@ import swaggerJsDocs from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
 import { Express } from "express-serve-static-core";
 import { Request, Response } from "express";
-import useRoute from "../routes/auth"
+import swaggerDoc from "../../public/swagger.json";
 
 const options: swaggerJsDocs.Options = {
   definition: {
-    openapi: "3.0.0",
+    swagger: "2.0",
     info: {
       title: "CHAT-APP API Docs",
       version: "1.0.0"
     },
     components: {
-      securitySchemas: {
+      securitySchemes: {
         bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
-        },
-      },
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        }
+      }
     },
     basePath: "/api",
     schemes: ["http", "https"],
-    security: [
-      {
-        bearerAuth: [],
-      }
-    ]
   },
-  apis: ['../routes/auth/index.ts', '../src/interfaces/user.ts']
+  apis: ['../routes/**/index.ts', '../src/interfaces/**.ts'],
+  securityDefinitions: {
+    auth: {
+      type: 'apiKey',
+      name: 'Authorization'
+    }
+  },
 };
 
 const swaggerSpec = swaggerJsDocs(options);
 
-export default function   swaggerDocs(app: Express, port: string) {
-    //Swagger page
-    app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+console.log("swaggerSpec", swaggerSpec);
+
+export default function swaggerDocs(app: Express, port: string) {
+  //Swagger page
+  app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
     //Docs in JSON format
     app.get("/public/swagger.json", (req: Request, res: Response)=> {
