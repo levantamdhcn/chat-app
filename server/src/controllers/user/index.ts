@@ -76,6 +76,10 @@ class UserController implements IUserService {
 
       await User.findByIdAndDelete(userId);
 
+      if(u?.avatar && u.avatar !== "") {
+        await cloudinaryInstance.deleteImage([u.avatar]);
+      }
+
       return u;
     } catch (error) {
       console.log(error);

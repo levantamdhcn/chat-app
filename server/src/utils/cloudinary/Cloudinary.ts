@@ -47,4 +47,31 @@ export class Cloudinary implements ICloudinary {
       };
     }
   };
+
+  deleteImage = async (images: string[]) => {
+    try {
+      const response = await cloudinary.api.delete_resources(images);
+
+      if(response) {
+        return {
+          isSuccess: true,
+          message: "Delete image successfully",
+          statusCode: 200,
+        }
+      } else {
+        return {
+          isSuccess: false,
+          message: "Couldn't delete your image at the moment. Please try again later.",
+          statusCode: 400,
+        }
+      }
+
+    } catch (error) {
+      return {
+        isSuccess: false,
+        message: error instanceof Error ? error.message : error,
+        statusCode: 500,
+      }
+    }
+  }
 }

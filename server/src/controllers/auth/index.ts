@@ -25,7 +25,7 @@ class AuthController {
         confirmationCode: token,
       });
 
-      const cloudPath = `${config.CLOUDINARY.FOLDER_NAME}/${newUser.email}`;
+      const cloudPath = `${config.CLOUDINARY.FOLDER_NAME}/avatar/${newUser._id}`;
       const { isSuccess, imageURL } = await cloudinaryInstance.uploadImage(localFilePath, cloudPath);
       if (isSuccess) {
         newUser.avatar = imageURL;

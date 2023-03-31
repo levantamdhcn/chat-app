@@ -52,6 +52,157 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"Pick_CreatedUser.Exclude_keyofCreatedUser.password-or-reset_password_token-or-confirmationCode__": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"avatar": {
+						"type": "string"
+					},
+					"isEmailVerified": {
+						"type": "boolean"
+					},
+					"role": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"_id",
+					"firstName",
+					"lastName",
+					"email",
+					"isEmailVerified",
+					"role",
+					"status"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_CreatedUser.password-or-reset_password_token-or-confirmationCode_": {
+				"$ref": "#/components/schemas/Pick_CreatedUser.Exclude_keyofCreatedUser.password-or-reset_password_token-or-confirmationCode__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"IUserResponse": {
+				"$ref": "#/components/schemas/Omit_CreatedUser.password-or-reset_password_token-or-confirmationCode_"
+			},
+			"IConversation": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"messages": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"members": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"_id",
+					"name",
+					"messages",
+					"members"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IConversationMember": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					},
+					"conversationId": {
+						"type": "string"
+					},
+					"leftTime": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"active": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"userId",
+					"conversationId",
+					"leftTime",
+					"active"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Types.ObjectId": {
+				"type": "string"
+			},
+			"CreatePayload": {
+				"properties": {
+					"receiver": {
+						"$ref": "#/components/schemas/Types.ObjectId"
+					},
+					"sender": {
+						"$ref": "#/components/schemas/Types.ObjectId"
+					}
+				},
+				"required": [
+					"receiver",
+					"sender"
+				],
+				"type": "object"
+			},
+			"IMessage": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"fromUser": {
+						"type": "string"
+					},
+					"toUser": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"messageText": {
+						"type": "string"
+					},
+					"conversationId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"_id",
+					"fromUser",
+					"toUser",
+					"type",
+					"messageText",
+					"conversationId"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -68,6 +219,133 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/auth/registration": {
+			"post": {
+				"operationId": "Registration",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"user": {
+											"$ref": "#/components/schemas/IUser"
+										},
+										"token": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"user",
+										"token"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUser"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"user": {
+											"$ref": "#/components/schemas/IUser"
+										},
+										"token": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"user",
+										"token"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"password": {
+										"type": "string"
+									},
+									"email": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"password",
+									"email"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/confirm/{confirmationCode}": {
+			"get": {
+				"operationId": "VerifyUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IUser"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "confirmationCode",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/user": {
 			"get": {
 				"operationId": "Get",
@@ -76,7 +354,12 @@
 						"description": "Ok",
 						"content": {
 							"application/json": {
-								"schema": {}
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IUserResponse"
+									},
+									"type": "array"
+								}
 							}
 						}
 					}
@@ -93,7 +376,9 @@
 						"description": "Ok",
 						"content": {
 							"application/json": {
-								"schema": {}
+								"schema": {
+									"$ref": "#/components/schemas/IUserResponse"
+								}
 							}
 						}
 					}
@@ -117,7 +402,9 @@
 						"description": "Ok",
 						"content": {
 							"application/json": {
-								"schema": {}
+								"schema": {
+									"$ref": "#/components/schemas/IUserResponse"
+								}
 							}
 						}
 					}
@@ -151,7 +438,9 @@
 						"description": "Ok",
 						"content": {
 							"application/json": {
-								"schema": {}
+								"schema": {
+									"$ref": "#/components/schemas/IUserResponse"
+								}
 							}
 						}
 					}
@@ -161,6 +450,184 @@
 					{
 						"in": "path",
 						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/conversation": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"receiver": {
+											"$ref": "#/components/schemas/IConversationMember"
+										},
+										"sender": {
+											"$ref": "#/components/schemas/IConversationMember"
+										},
+										"conversation": {
+											"$ref": "#/components/schemas/IConversation"
+										}
+									},
+									"required": [
+										"receiver",
+										"sender",
+										"conversation"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreatePayload"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/conversation/{userId}": {
+			"get": {
+				"operationId": "GetConversationByUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IConversation"
+									},
+									"type": "array",
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/conversation/{conversationId}": {
+			"post": {
+				"operationId": "PushMember",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IConversation"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "conversationId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"items": {
+									"type": "string"
+								},
+								"type": "array"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/message": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IMessage"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IMessage"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/message/{conversationId}": {
+			"get": {
+				"operationId": "GetMessageByConversation",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "conversationId",
 						"required": true,
 						"schema": {
 							"type": "string"
