@@ -10,7 +10,6 @@ $ npm install or yarn install
 ## Running the app
 
 ```bash
-# deployment
 $ npm run dev
 ```
 
@@ -20,10 +19,11 @@ $ npm run dev
 - If window: goes through post installation step: https://docs.docker.com/desktop/install/windows-install/
 - Fill .env information
 
-scripts/deployment/production/start.sh
-
+```bash
+$ scripts/deployment/production/start.sh
 ```
 - Stop running deployment:
-```
 
-scripts/deployment/production/stop.sh
+```bash
+$ scripts/deployment/production/stop.sh
+```
