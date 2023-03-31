@@ -20,10 +20,10 @@ $ npm run dev
 - Fill .env information
 
 ```bash
-$ scripts/deployment/production/start.sh
+$ sh scripts/deployment/production/start.sh
 ```
 - Stop running deployment:
 
 ```bash
-$ scripts/deployment/production/stop.sh
+$ sh scripts/deployment/production/stop.sh
 ```
