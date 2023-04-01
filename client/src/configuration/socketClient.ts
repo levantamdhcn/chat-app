@@ -7,6 +7,7 @@ export default class SocketClient {
 
   connect() {
     const token = localStorage.getItem("accessToken");
+    console.log('token', token);
 
     this.socket = io(REACT_APP_WEB_SOCKET_HOST, {
       extraHeaders: {
@@ -34,5 +35,9 @@ export default class SocketClient {
     if (this.socket) {
       this.socket.on(eventName, func);
     }
+  }
+
+  to() {
+    
   }
 }

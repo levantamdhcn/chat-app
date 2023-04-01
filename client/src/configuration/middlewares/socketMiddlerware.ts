@@ -17,7 +17,7 @@ export default function socketMiddlerware(socket: SocketClient) {
 
     switch (type) {
       //Connect to the socket when a user login
-      case 'auth/login':
+      case 'auth/initialise/fulfilled':
         socket.connect();
 
         // Set up all the socket event handlers
@@ -32,6 +32,7 @@ export default function socketMiddlerware(socket: SocketClient) {
         socket.on(SOCKET_EVENTS.MSG_RECEIVE, (message: IMessage) => {
           dispatch(addMessage(message))
         })
+        
 
         // Remove if some user stops typing
         socket.on(SOCKET_EVENTS.STOP_TYPING, (_id: string) => {
@@ -64,10 +65,13 @@ export default function socketMiddlerware(socket: SocketClient) {
         break;
       }
       // Let the server be the source of truth for all messages; don't dispatch anything
-      case 'conversation/sendMessage': {
-        socket.emit(SOCKET_EVENTS.MSG_SEND, payload)
+      case 'conversation/sendMessage/fulfilled': {
+        socket.emit(SOCKET_EVENTS.MSG_SEND, {
+          to: payload._id,
+          content: payload.data
+        })
 
-        return
+        break;
       }
     }
 

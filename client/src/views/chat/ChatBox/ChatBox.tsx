@@ -7,7 +7,7 @@ import useAuth from "../../../hooks/useAuth";
 import useConversation from "../../../hooks/useConversation";
 import { useDispatch } from "react-redux";
 import { sendMessage } from "../../../store/reducers/conversation";
-import { AppDispatch } from "../../../configuration/store";
+import { ThunkDispatch } from "redux-thunk";
 
 const actions = [
   {
@@ -49,7 +49,7 @@ const ChatBox = () => {
     string | number | readonly string[] | undefined
   >(undefined);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
   const handleChooseEmoji = (emoji: EmojiClickData, event: MouseEvent) => {
     setMessage((prev) => (prev || "") + emoji.emoji);

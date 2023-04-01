@@ -6,12 +6,12 @@ import "./styles/index.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "./configuration/store";
 import { useEffect } from "react";
 import { initialise } from "./store/reducers/auth";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 
 const App = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     if(token){

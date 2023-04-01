@@ -1,3 +1,4 @@
+import { ThunkDispatch } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +22,7 @@ const Login = () => {
   });
   const [error, setError] = useState("");
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
   const { isFetching, isSuccess, isError } = useAuth();
 
