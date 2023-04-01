@@ -1,6 +1,6 @@
 import { Get, Inject } from "@tsoa/runtime";
 import { Route, Body, Put, Delete } from "tsoa";
-import { IUser } from "../../interfaces/user";
+import { CreatedUser, IUser, IUserResponse } from "../../interfaces/user";
 import User from "../../models/user";
 import IUserService from "../../services/user";
 import { cloudinaryInstance } from "../../utils/cloudinary";
@@ -13,7 +13,7 @@ class UserController implements IUserService {
   }
 
   @Get()
-  public async get() {
+  public async get(): Promise<IUserResponse[] | undefined> {
     try {
       const users = await User.find({});
 
@@ -24,7 +24,7 @@ class UserController implements IUserService {
   };
 
   @Get("{userId}")
-  public async getOne(userId: string) {
+  public async getOne(userId: string): Promise<IUserResponse | undefined> {
     try {
       const user = await User.findById(userId);
       if (!user) {
@@ -38,7 +38,7 @@ class UserController implements IUserService {
   };
 
   @Put("{userId}")
-  public async update(@Body() data: IUser, userId: string, @Inject() localFilePath: string) {
+  public async update(@Body() data: IUser, userId: string, @Inject() localFilePath: string): Promise<IUserResponse | undefined> {
     try {
       const u = await User.findById(userId);
       if (!u) {
@@ -67,7 +67,7 @@ class UserController implements IUserService {
   };
 
   @Delete("{userId}")
-  public async delete(userId: string) {
+  public async delete(userId: string): Promise<IUserResponse | undefined> {
     try {
       const u = await User.findById(userId);
       if (!u) {
@@ -75,6 +75,10 @@ class UserController implements IUserService {
       };
 
       await User.findByIdAndDelete(userId);
+
+      if(u?.avatar && u.avatar !== "") {
+        await cloudinaryInstance.deleteImage([u.avatar]);
+      }
 
       return u;
     } catch (error) {

@@ -1,14 +1,12 @@
-import { Types } from "mongoose";
-import Conversation from "../../models/conversation";
-import { Body, Get, Inject, Post } from "tsoa";
-import ConversationMember from "../../models/conversationMember";
-import { IMessage } from "src/interfaces/message";
+import { Body, Get, Inject, Path, Post, Route } from "tsoa";
+import { IMessage } from "../../interfaces/message";
 import Message from "../../models/message";
 
+@Route('message')
 class MessageController {
   constructor() { }
   @Post("/")
-  public async create(@Body() data: IMessage) {
+  public async create(@Body() data: IMessage): Promise<IMessage> {
     if(!data.conversationId) {
       throw new Error("Conversation is required!");
     }
@@ -22,7 +20,7 @@ class MessageController {
   };
 
   @Get("{conversationId}")
-  public async getMessageByConversation(@Inject() conversationId: string) {
+  public async getMessageByConversation(@Path() conversationId: string) {
     try {
       if(!conversationId) {
         throw new Error("Conversation is required.");

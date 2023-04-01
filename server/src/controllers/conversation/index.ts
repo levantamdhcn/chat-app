@@ -1,17 +1,23 @@
 import { Types } from "mongoose";
 import Conversation from "../../models/conversation";
-import { Body, Get, Inject, Post } from "tsoa";
+import { Body, Get, Path, Post, Route } from "tsoa";
 import ConversationMember from "../../models/conversationMember";
+import { IConversation, IConversationMember } from "../../interfaces/conversation";
 
 type CreatePayload = {
   sender: Types.ObjectId,
   receiver: Types.ObjectId,
 }
 
+@Route('conversation')
 class ConversationController {
   constructor() { }
   @Post("/")
-  public async create(@Body() data: CreatePayload) {
+  public async create(@Body() data: CreatePayload): Promise<{ 
+    conversation: IConversation, 
+    sender: IConversationMember, 
+    receiver: IConversationMember 
+  }> {
     try {
       const { sender, receiver } = data;
       if (!sender || !receiver) {
@@ -52,9 +58,9 @@ class ConversationController {
   };
 
   @Get("{userId}")
-  public async getConversationByUser(@Inject() userId: string) {
+  public async getConversationByUser(@Path() userId: string): Promise<IConversation[] | null> {
     try {
-      const conversation = await Conversation.find({ members: { $in: [userId] }}).populate({
+      const conversation = await Conversation.find({ members: { $in: [userId] } }).populate({
         path: "members",
         select: [
           "_id",
@@ -74,7 +80,7 @@ class ConversationController {
   };
 
   @Post("{conversationId}")
-  public async pushMember(@Body() members: string[], @Inject() conversationId: string) {
+  public async pushMember(@Body() members: string[], @Path() conversationId: string): Promise<IConversation | null> {
     try {
       if (members.length === 0) {
         throw new Error("Members is empty.");

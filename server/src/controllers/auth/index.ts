@@ -1,5 +1,5 @@
 import { IUser, status } from "../../interfaces/user";
-import { Post, Body, Inject, Get } from "tsoa";
+import { Post, Body, Inject, Get, Route, Path } from "tsoa";
 import USER from "../../models/user";
 import jwt from "jsonwebtoken";
 import config from "../../config";
@@ -7,13 +7,17 @@ import { sendConfirmationEmail } from "../../utils/nodemailer";
 import { cloudinaryInstance } from "../../utils/cloudinary";
 import { verifyRefreshToken } from "../../middlewares/auth";
 
+@Route('auth')
 class AuthController {
   constructor() {
 
   };
 
   @Post("/registration")
-  public async registration(@Body() user: IUser, @Inject() localFilePath: string) {
+  public async registration(@Body() user: IUser, @Inject() localFilePath: string): Promise<{
+    token: string,
+    user: IUser,
+  } | undefined> {
     try {
       const token = jwt.sign({ email: user.email }, config.env.SECRET_KEY);
       const newUser = new USER({
@@ -22,7 +26,7 @@ class AuthController {
         confirmationCode: token,
       });
 
-      const cloudPath = `/${config.CLOUDINARY.FOLDER_NAME}/${newUser.email}`;
+      const cloudPath = `${config.CLOUDINARY.FOLDER_NAME}/avatar/${newUser._id}`;
       const { isSuccess, imageURL } = await cloudinaryInstance.uploadImage(localFilePath, cloudPath);
       if (isSuccess) {
         newUser.avatar = imageURL;
@@ -42,8 +46,9 @@ class AuthController {
   };
 
   @Post("/login")
-  public async login(@Body() email: string, password: string) {
+  public async login(@Body() data: { email: string, password: string }): Promise<{ token: string, user: IUser } | undefined> {
     try {
+      const { email, password } = data;
       if (!email) {
         throw new Error("Email is required");
       };
@@ -71,7 +76,7 @@ class AuthController {
   };
 
   @Get("/confirm/:confirmationCode")
-  public async verifyUser(@Inject() confirmationCode: string) {
+  public async verifyUser(@Path() confirmationCode: string): Promise<IUser | null> {
     let u = await USER.findOne({
       confirmationCode: confirmationCode,
     });
@@ -85,14 +90,6 @@ class AuthController {
     }, { new: true });
 
     return updatedU;
-  }
-
-  @Post("/refreshToken")
-  public async refreshToken(@Body() refreshToken: string) {
-    const userData = await verifyRefreshToken(refreshToken);
-    if(!userData || !userData.id) throw new Error("Unauthorized");
-
-
   }
 };
 

@@ -12,9 +12,9 @@ export interface IUserMethods {
 }
 
 // Create a new Model type that knows about IUserMethods...
-type UserModel = mongoose.Model<IUser, {}, IUserMethods>;
+type UserModel = mongoose.Model<CreatedUser, {}, IUserMethods>;
 
-const userSchema = new mongoose.Schema<CreatedUser, UserModel>({
+const userSchema = new mongoose.Schema({
   _id: {
     type: mongoose.Schema.Types.ObjectId,
     auto: true,

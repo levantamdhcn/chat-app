@@ -24,7 +24,7 @@ class Auth {
         if (!email || !password) {
           res.status(404).json({ message: "Missing required field" });
         };
-        const result = await this.controller.login(email, password);
+        const result = await this.controller.login({ email, password });
 
         res.status(200).json(result);
       } catch (error) {
