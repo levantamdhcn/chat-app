@@ -1,9 +1,10 @@
 import { IMessage } from "../../../types/message";
+import { IUser } from "../../../types/user";
 
 export type TConversation = {
   _id: string;
   name: string,
-  members: IConversationMember[];
+  members: ExtendedConversationMember[];
   messages: IMessage[];
 }
 
@@ -15,11 +16,15 @@ export interface IConversationMember {
   active: boolean;
 }
 
+type ExtendedConversationMember = IConversationMember & IUser;
 export interface IConversationState {
   currentConversation: TConversation | null;
   conversations: TConversation[];
-  isSending: boolean,
-  isSuccess: boolean,
+  isFetching: boolean,
   isError: boolean,
+  isSuccess: boolean,
   errorMessage: string,
+  isMsgSending: boolean,
+  isMsgSendSuccess: boolean,
+  isMsgSendError: boolean,
 }

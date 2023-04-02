@@ -5,6 +5,7 @@ export interface IMessage {
   type: string;
   messageText: string;
   conversationId: string;
+  createdAt: string;
 }
 
 export enum ETypes {

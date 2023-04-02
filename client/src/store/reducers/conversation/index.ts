@@ -1,73 +1,29 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../../../configuration/axios";
-import { IConversationState } from "./types";
+import { IConversationState, TConversation } from "./types";
 import { IMessage } from "../../../types/message";
 import { MessageInput } from "../../../views/chat/ChatBox/ChatBox";
 
 const BASE_URL = process.env.REACT_APP_SERVER_ENDPOINT as string;
 
 export const initialState: IConversationState = {
-  currentConversation: {
-    _id: "1",
-    name: "No_name",
-    members: [
-
-    ],
-    messages: [
-      {
-        _id: "1",
-        fromUser: "1",
-        toUser: "64046c6b6405c724942e2515",
-        type: "string",
-        messageText: "Helloo",
-        conversationId: "1",
-      },
-      {
-        _id: "2",
-        fromUser: "64046c6b6405c724942e2515",
-        toUser: "2",
-        type: "string",
-        messageText: "Helloo",
-        conversationId: "1",
-      },
-      {
-        _id: "1",
-        fromUser: "64046c6b6405c724942e2515",
-        toUser: "64046c6b6405c724942e2515",
-        type: "string",
-        messageText: "Helloo",
-        conversationId: "1",
-      },
-      {
-        _id: "1",
-        fromUser: "1",
-        toUser: "64046c6b6405c724942e2515",
-        type: "string",
-        messageText: "Helloo",
-        conversationId: "1",
-      },
-    ]
-  },
+  currentConversation: null,
   conversations: [],
-  isSending: false,
-  isSuccess: false,
+  isFetching: false,
   isError: false,
+  isSuccess: false,
+  isMsgSending: false,
+  isMsgSendSuccess: false,
+  isMsgSendError: false,
   errorMessage: "",
 };
 
 export const sendMessage = createAsyncThunk(
-  `message`, async ({ data }: { data: MessageInput }, thunkAPI): Promise<IMessage | unknown> => {
+  `message/send`, async ({ data }: { data: MessageInput }, thunkAPI): Promise<IMessage | unknown> => {
     try {
       const response = await axios.post(`${BASE_URL}/api/message`, data);
       if (response.data) {
-        // const { _id,
-        //   fromUser,
-        //   toUser,
-        //   type,
-        //   messageText,
-        //   conversationId } = response.data;
-
-        return data;
+        return response.data;
       } else {
         return thunkAPI.rejectWithValue(data);
       }
@@ -78,27 +34,62 @@ export const sendMessage = createAsyncThunk(
   }
 );
 
+export const getConversations = createAsyncThunk(`conversation/getAll`, async ({ userId }: { userId: string }, thunkAPI): Promise<TConversation[] | unknown> => {
+  try {
+    const response = await axios.get(`${BASE_URL}/api/conversation/${userId}`);
+    if (response.data) {
+      return response.data;
+    } else {
+      return thunkAPI.rejectWithValue(userId);
+    }
+  } catch (error) {
+    return thunkAPI.rejectWithValue(userId);
+  }
+})
+
 
 export const slice = createSlice({
   name: 'message',
   initialState,
   reducers: {
     clearState: () => initialState,
+    setConversation: (state, { payload }) => {
+      state.currentConversation = payload;
+    },
+    setConversations: (state, { payload }) => {
+      state.conversations = payload;
+    }
   },
   extraReducers: {
     [sendMessage.pending.type]: (state: IConversationState, { payload }) => {
-      state.isSending = true;
+      state.isMsgSending = true;
     },
     [sendMessage.fulfilled.type]: (state: IConversationState, { payload }) => {
-      state.isSending = false;
+      state.isMsgSending = false;
       state.currentConversation?.messages.push(payload);
-      state.isSuccess = true;
+      state.isMsgSendSuccess = true;
     },
     [sendMessage.rejected.type]: (state: IConversationState, { payload }) => {
-      state.isSending = false;
-      state.isSuccess = false;
-      state.isError = true;
+      state.isMsgSendError = false;
+      state.isMsgSendSuccess = false;
+      state.isMsgSendError = true;
       state.errorMessage = payload;
+    },
+    [getConversations.pending.type]: (state: IConversationState, { payload }) => {
+      state.isFetching = true;
+    },
+    [getConversations.fulfilled.type]: (state: IConversationState, { payload }) => {
+      state.isFetching = false;
+      state.isError = false;
+      state.isSuccess = true;
+      state.conversations = payload;
+      console.log("payload conversation", payload);
+    },
+    [getConversations.rejected.type]: (state: IConversationState, { payload }) => {
+      state.isFetching = false;
+      state.isError = true;
+      state.isSuccess = false;
+      state.conversations = [];
     },
   }
 });
