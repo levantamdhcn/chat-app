@@ -15,13 +15,16 @@ export const initialState: AuthState = {
   isAuthenticated: false,
   isInitialised: false,
   user: null,
+  contacts: [],
 };
 
-export const setSession = (accessToken: string | null) => {
-  if (accessToken) {
+export const setSession = (accessToken: string | null, refreshToken: string | null) => {
+  if (accessToken && refreshToken) {
     localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
   } else {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
   }
 }
 
@@ -30,8 +33,8 @@ export const register = createAsyncThunk(
     try {
       const response = await axios.post(`${BASE_URL}/api/auth/registration`, data);
       if (response.data) {
-        const { user, token } = response.data;
-        setSession(token);
+        const { user, accessToken, refreshToken } = response.data;
+        setSession(accessToken, refreshToken);
 
         return { user };
       } else {
@@ -49,10 +52,11 @@ export const login = createAsyncThunk(
     try {
       const response = await axios.post(`${BASE_URL}/api/auth/login`, data);
       if (response.data) {
-        const { user, token } = response.data;
-        setSession(token);
+        const { user, accessToken, refreshToken } = response.data;
+        setSession(accessToken, refreshToken);
+        const contacts = await axios.get(`${BASE_URL}/api/contact/user/${user._id}`);
 
-        return { user };
+        return { user, contacts };
       } else {
         return thunkAPI.rejectWithValue(data);
       }
@@ -63,25 +67,27 @@ export const login = createAsyncThunk(
   }
 );
 
-export const initialise = createAsyncThunk(`auth/initialise`, async ({ token }: { token: string }, thunkAPI) => {
+export const initialise = createAsyncThunk(`auth/initialise`, async ({ accessToken, refreshToken }: { accessToken: string, refreshToken: string }, thunkAPI) => {
   try {
-    if(!isValidToken(token)) throw new Error("Token is expired");  
+    if(!isValidToken(accessToken)) throw new Error("Token is expired");  
     const response = await axios.get(`${BASE_URL}/api/user/currentUser`);
     if (response.data) {
       const user = response.data;
-      setSession(token);
+      setSession(accessToken, refreshToken);
 
-      return { user };
+      const contacts = await axios.get(`${BASE_URL}/api/contact/user/${user._id}`);
+
+      return { user, contacts };
     } else {
-      return thunkAPI.rejectWithValue(token);
+      return thunkAPI.rejectWithValue(accessToken);
     }
   } catch (error) {
     console.log(error);
-    return thunkAPI.rejectWithValue(token);
+    return thunkAPI.rejectWithValue(accessToken);
   }
 })
 export const logout = () => {
-  setSession(null);
+  setSession(null, null);
   clearState();
 }
 
@@ -94,16 +100,6 @@ export const isValidToken = (accessToken: string) => {
 
   return !decoded.exp || decoded.exp > currentTime;
 }
-
-
-// const token = localStorage.getItem("accessToken");
-
-// if(token && isValidToken(token)) {
-//   setSession(token);
-//   initialState.isFetching = true;
-//   const user = axios.get(`${BASE_URL}/api/user/currentUser`);
-
-// }
 
 export const slice = createSlice({
   name: 'auth',
@@ -121,16 +117,17 @@ export const slice = createSlice({
       state.errorMessage = payload.errorMessage;
     },
     [initialise.fulfilled.type]: (state: AuthState, { payload }) => {
-      console.log("payload", payload);
       state.isFetching = false;
       state.isSuccess = true;
       state.user = payload.user;
+      state.contacts = payload.contacts;
       state.isAuthenticated = true;
     },
     [login.fulfilled.type]: (state: AuthState, { payload }: { payload: any }) => {
       state.isFetching = false;
       state.isSuccess = true;
       state.user = payload.user;
+      state.contacts = payload.contacts;
       state.isAuthenticated = true;
     },
     [login.pending.type]: (state: AuthState) => {

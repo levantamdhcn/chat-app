@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "../../../configuration/axios";
+import axios from "./../../../configuration/axios";
 import { IConversationState, TConversation } from "./types";
 import { IMessage } from "../../../types/message";
 import { MessageInput } from "../../../views/chat/ChatBox/ChatBox";

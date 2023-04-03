@@ -8,7 +8,6 @@ import config from "../config";
 // Put all user instance methods in this interface:
 export interface IUserMethods {
   validPassword(password: string): Promise<any>;
-  generateJWT(): string;
 }
 
 // Create a new Model type that knows about IUserMethods...
@@ -94,24 +93,6 @@ userSchema.pre("save", function (next) {
 // Checks if password is valid
 userSchema.methods.validPassword = async function (password: string) {
   return await bcrypt.compare(password.toString(), this.password);
-};
-
-userSchema.methods.generateJWT = function() {
-  const today = new Date();
-  const expirationDate = new Date(today);
-  expirationDate.setDate(today.getDate() + 60);
-
-  let payload = {
-    _id: this._id,
-    email: this.email,
-    username: this.username,
-    firstName: this.firstName,
-    lastName: this.lastName,
-  };
-
-  return jwt.sign(payload, config.env.SECRET_KEY, {
-    expiresIn: parseInt((expirationDate.getTime() / 1000).toString(), 10)
-  });
 };
 
 const User = mongoose.model<CreatedUser, UserModel>("User", userSchema);

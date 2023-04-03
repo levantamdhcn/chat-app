@@ -9,7 +9,10 @@ export default {
     NODE_ENV: process.env.NODE_ENV,
     APP_PORT: process.env.PORT,
     APP_HOST: process.env.HOST,
-    SECRET_KEY: process.env.SECRET_KEY || "",
+    SECRET_KEY: process.env.ACCESS_SECRET_KEY || "",
+    REFRESH_KEY: process.env.REFRESH_SECRET_KEY || "",
+    JWT_ACCESS_EXPIRE: process.env.JWT_ACCESS_EXPIRE,
+    JWT_REFRESH_EXPIRE: process.env.JWT_REFRESH_EXPIRE,
   },
   MONGO_URL: {
     String: process.env.MONGO_URL || "",

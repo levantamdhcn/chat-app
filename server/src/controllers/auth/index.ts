@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import config from "../../config";
 import { sendConfirmationEmail } from "../../utils/nodemailer";
 import { cloudinaryInstance } from "../../utils/cloudinary";
-import { verifyRefreshToken } from "../../middlewares/auth";
+import { AuthService } from "../../services/auth";
 
 @Route('auth')
 class AuthController {
@@ -15,7 +15,8 @@ class AuthController {
 
   @Post("/registration")
   public async registration(@Body() user: IUser, @Inject() localFilePath: string): Promise<{
-    token: string,
+    accessToken: string,
+    refreshToken: string,
     user: IUser,
   } | undefined> {
     try {
@@ -35,9 +36,10 @@ class AuthController {
       let createdUser = await newUser.save();
 
       await sendConfirmationEmail(`${newUser.firstName} ${newUser.lastName}`, newUser.email, newUser.confirmationCode);
-
+      const tokens = AuthService.generateTokens({ _id: createdUser._id });
       return {
-        token: createdUser.generateJWT(),
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
         user: createdUser,
       };
     } catch (error) {
@@ -46,7 +48,11 @@ class AuthController {
   };
 
   @Post("/login")
-  public async login(@Body() data: { email: string, password: string }): Promise<{ token: string, user: IUser } | undefined> {
+  public async login(@Body() data: { email: string, password: string }): Promise<{
+    accessToken: string,
+    refreshToken: string,
+    user: IUser
+  } | undefined> {
     try {
       const { email, password } = data;
       if (!email) {
@@ -57,7 +63,7 @@ class AuthController {
       if (!u) throw new Error(`User with email ${email} is not exist`);
 
       const validPassword = await u.validPassword(password);
-      console.log("validPassword", validPassword);
+
       if (!validPassword) {
         throw new Error("Invalid password!");
       };
@@ -66,14 +72,31 @@ class AuthController {
         throw new Error("Pending Account. Please Verify Your Email!");
       }
 
+      const tokens = AuthService.generateTokens(u);
+      console.log("tokens", tokens);
+
       return {
-        token: u.generateJWT(),
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
         user: u
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  @Post("/refreshToken/{refreshToken}")
+  public async refresh(@Path() refreshToken: string) {
+    try {
+      const userData = await AuthService.verifyRefreshToken(refreshToken);
+      if (!userData || !userData._id) throw new Error("RefreshToken is invalid");
+
+      const tokens = AuthService.generateTokens(userData);
+      return tokens;
+    } catch (error) {
+      throw new Error(`${error}`)
+    }
+  }
 
   @Get("/confirm/:confirmationCode")
   public async verifyUser(@Path() confirmationCode: string): Promise<IUser | null> {

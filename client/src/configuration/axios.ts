@@ -1,33 +1,48 @@
-import axios from "axios";
-import QueryString from "qs";
+import axios from 'axios';
 
-const axiosClient = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
-  headers: {
-    'content-type': 'application/json',
-  },
-  paramsSerializer: {
-    serialize: (params) => {
-        return QueryString.stringify(params, { arrayFormat: 'repeat' })
-    }
+const axiosInstance = axios.create();
+
+const refreshAccessToken = async (): Promise<{
+  accessToken: string,
+  refreshToken: string
+}> => {
+  const refreshToken = localStorage.getItem('refreshToken');
+
+  const tokens = await axios.post(`/auth/refreshToken/${refreshToken}`)
+  return tokens.data;
 }
-});
 
-axiosClient.interceptors.request.use(async (config) => {
-  const customHeaders: any = {};
+axiosInstance.interceptors.request.use(function (config) {
+  config.baseURL = `${process.env.REACT_APP_SERVER_ENDPOINT}/api`;
 
-  const accessToken = localStorage.getItem("accessToken");
-  if (accessToken) {
-    customHeaders.Authorization = `Bearer ${accessToken}`;
-  }
+  const token = localStorage.getItem('accessToken');
+  console.log('token', token);
+  config.headers.Authorization = `Bearer ${token}`;
+  config.headers.Accept = 'application/json';
+  config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
 
-  return {
-    ...config,
-    headers: {
-      ...customHeaders,  // auto attach token
-      ...config.headers, // but you can override for some requests
+  return config;
+}, function (error) {
+  return Promise.reject(error);
+})
+
+axiosInstance.interceptors.response.use(
+  response => response,
+  async error => {
+    const originalRequest = error.config;
+    if (error.response.status === 403 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const tokens = await refreshAccessToken();
+      axios.defaults.headers.common.Authorization = 'Bearer ' + tokens.accessToken;
+      return axiosInstance(originalRequest);
     }
-  };
-});
+    if (error.response?.status === 401) {
+      localStorage.removeItem('accessToken');
+    };
+    Promise.reject(
+      (error.response && error.response.data) || 'Something went wrong',
+    )
+  }
+);
 
-export default axiosClient;
+export default axiosInstance;

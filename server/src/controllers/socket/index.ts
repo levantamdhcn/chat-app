@@ -1,9 +1,9 @@
 import { Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import { AuthService } from "../../services/auth";
 
 import { ErrorEnum } from "../../interfaces/ErrorHandler";
 import { IMessageSend } from "../../interfaces/message";
-import { verifyAccessToken } from "../../middlewares/auth";
 import ISocket, { SocketEventsEnum } from "../../interfaces/socket";
 import CONVERSATION from "../../models/conversation";
 import MESSAGE from "../../models/message";
@@ -75,13 +75,13 @@ export class ChatSocket implements ISocket {
     try {
       if (!socket.handshake.headers.authorization) return next(new Error(ErrorEnum.authorization));
 
-      const userData = await verifyAccessToken(socket.handshake.headers.authorization);
+      const userData = await AuthService.verifyAccessToken(socket.handshake.headers.authorization);
 
       if (!userData) return next(new Error(ErrorEnum.unauthorized));
 
-      onlineUsers.set('userId', userData.id);
+      onlineUsers.set('userId', userData._id);
       onlineUsers.set('conversationId', socket.id);
-      socket.data.userId = userData.id;
+      socket.data.userId = userData._id;
 
       next();
 

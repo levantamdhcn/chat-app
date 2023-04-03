@@ -60,6 +60,16 @@ class Auth {
         res.status(404).json({ message: "Verify failed." });
       }
     })
+
+    this.rout.post("/refreshToken/{refreshToken}", async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        let refreshToken = req.params.refreshToken;
+        let tokens = this.controller.refresh(refreshToken);
+        res.status(200).json(tokens);
+      } catch (error) {
+        res.status(404).json({ message: "Verify failed." });
+      }
+    })
   };
 };
 

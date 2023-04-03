@@ -8,4 +8,10 @@ export interface AuthState {
   isAuthenticated: boolean;
   isInitialised: boolean;
   user: IUser | null;
+  contacts: IContact[];
 };
+
+export interface IContact {
+  _id: string;
+  memebers: IUser[];
+}
