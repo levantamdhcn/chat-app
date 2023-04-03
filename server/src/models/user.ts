@@ -77,7 +77,7 @@ userSchema.set("toJSON", {
   transform: (doc, ret, opt) => {
     delete ret["confirmationCode"];
     delete ret["password"];
-    delete ret["_id"];
+    delete ret["id"];
     delete ret["__v"];
     return ret;
   },
@@ -86,17 +86,13 @@ userSchema.set("toJSON", {
 // Before saving new user, hash the password with salt
 userSchema.pre("save", function (next) {
   // Hash the password with a salt
-  console.log("this.password", this.password);
   const hash = bcrypt.hashSync(this.password, bcrypt.genSaltSync(8));
   this.password = hash;
-  console.log(">>>>this.password", this.password);
   next();
 });
 
 // Checks if password is valid
 userSchema.methods.validPassword = async function (password: string) {
-  console.log('password', password);
-  console.log('this.password', (this as any).password);
   return await bcrypt.compare(password.toString(), this.password);
 };
 
@@ -106,7 +102,7 @@ userSchema.methods.generateJWT = function() {
   expirationDate.setDate(today.getDate() + 60);
 
   let payload = {
-    id: this._id,
+    _id: this._id,
     email: this.email,
     username: this.username,
     firstName: this.firstName,

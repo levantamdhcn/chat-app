@@ -27,13 +27,13 @@ const generateJWT = (payload: IUser) => {
 const verifyAccessToken = async (token: string): Promise<{ id: string }> => {
   const tokenData = await jwt.verify(token, config.env.SECRET_KEY);
   // @ts-ignore
-  return { id: tokenData.id };
+  return { _id: tokenData._id };
 }
 
 const verifyRefreshToken = (token: string): Promise<{ id: string }> => {
   const tokenData = jwt.verify(token, config.env.SECRET_KEY);
   // @ts-ignore
-  return { id: tokenData.id };
+  return { _id: tokenData._id };
 }
 
 export { authMiddleware, generateJWT, verifyAccessToken, verifyRefreshToken };

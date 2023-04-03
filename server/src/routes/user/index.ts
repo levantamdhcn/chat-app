@@ -64,7 +64,14 @@ class User {
       } catch (error) {
         res.status(404).json({ message: error instanceof Error ? error.message : error });
       }
-    })  
+    })
+    
+    this.rout.get("/search/:searchValue", authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
+      const searchValue = req.params.searchValue;
+      const result = await this.controller.search(searchValue);
+
+      res.status(200).json(result);
+    })
   };
 };
 

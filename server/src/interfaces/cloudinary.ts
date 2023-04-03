@@ -1,4 +1,4 @@
-import { IResponse } from "../Response";
+import { IResponse } from "./response";
 
 export interface ICloudinaryResponse extends IResponse {
   imageURL?: string;

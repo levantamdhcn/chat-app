@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import { unlinkSync } from "fs";
-import { ICloudinary, ICloudinaryResponse } from "src/interfaces/Cloudinary";
+import { ICloudinary, ICloudinaryResponse } from "src/interfaces/cloudinary";
 import config from "../../config";
 
 const { CLOUD_NAME, API_KEY, API_SECRET } = config.CLOUDINARY;

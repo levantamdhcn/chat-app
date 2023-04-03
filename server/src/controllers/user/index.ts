@@ -1,5 +1,5 @@
 import { Get, Inject } from "@tsoa/runtime";
-import { Route, Body, Put, Delete } from "tsoa";
+import { Route, Body, Put, Delete, Path } from "tsoa";
 import { CreatedUser, IUser, IUserResponse } from "../../interfaces/user";
 import User from "../../models/user";
 import IUserService from "../../services/user";
@@ -67,7 +67,7 @@ class UserController implements IUserService {
   };
 
   @Delete("{userId}")
-  public async delete(userId: string): Promise<IUserResponse | undefined> {
+  public async delete(@Path() userId: string): Promise<IUserResponse | undefined> {
     try {
       const u = await User.findById(userId);
       if (!u) {
@@ -84,6 +84,25 @@ class UserController implements IUserService {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  @Get("/search/{searchValue}")
+  public async search(@Path() searchValue: string): Promise<CreatedUser[] | undefined> {
+    if (searchValue === "") return await User.find();
+    
+    return await User.find({
+      $or: [
+        {
+          firstName: { $regex: searchValue, $options: "i" },
+        },
+        {
+          lastName: { $regex: searchValue, $options: "i" },
+        },
+        {
+          email: { $regex: searchValue, $options: "i" }
+        }
+      ],
+    })
   }
 }
 

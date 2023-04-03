@@ -5,4 +5,5 @@ export default interface IUserService {
     getOne: (id: string) => Promise<IUserResponse | undefined>;
     update: (user: IUser, userId: string, localFilePath: string) => Promise<IUserResponse | undefined>;
     delete: (id: string) => Promise<IUserResponse | undefined>;
+    search: (searchValue: string) => Promise<CreatedUser[] | undefined>;
 }

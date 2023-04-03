@@ -4,7 +4,6 @@ import passportLocal from "passport-local";
 import passportJwt from "passport-jwt";
 import USER from "./models/user";
 import config from "./config";
-import { IUser } from "./interfaces/user";
 
 const LocalStrategy = passportLocal.Strategy;
 const jwtStrategy = passportJwt.Strategy;
@@ -44,7 +43,7 @@ passport.use(
       secretOrKey: config.env.SECRET_KEY,
     },
     (jwtPayload: any, cb) => {
-      USER.findById(jwtPayload.id)
+      USER.findById(jwtPayload._id)
         .then((user: any) => {
           return cb(null, user);
         })

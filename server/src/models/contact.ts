@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { IContact } from "src/interfaces/contact";
+import { IContact } from "../interfaces/contact";
 
 const contactSchema = new mongoose.Schema({
   _id: {
