@@ -1,14 +1,13 @@
 import axios from 'axios';
+import { isValidToken, setSession } from '../store/reducers/auth';
 
 const axiosInstance = axios.create();
 
-const refreshAccessToken = async (): Promise<{
+const refreshAccessToken = async (token: string): Promise<{
   accessToken: string,
   refreshToken: string
 }> => {
-  const refreshToken = localStorage.getItem('refreshToken');
-
-  const tokens = await axios.post(`/auth/refreshToken/${refreshToken}`)
+  const tokens = await axios.post(`${process.env.REACT_APP_SERVER_ENDPOINT}/api/auth/refreshToken/${token}`)
   return tokens.data;
 }
 
@@ -29,16 +28,19 @@ axiosInstance.interceptors.request.use(function (config) {
 axiosInstance.interceptors.response.use(
   response => response,
   async error => {
+    const storedRefreshToken = localStorage.getItem('refreshToken');
     const originalRequest = error.config;
-    if (error.response.status === 403 && !originalRequest._retry) {
+    if (error.response.status === 401 && !originalRequest._retry && storedRefreshToken) {
+      if (!isValidToken(storedRefreshToken)) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+      };
       originalRequest._retry = true;
-      const tokens = await refreshAccessToken();
-      axios.defaults.headers.common.Authorization = 'Bearer ' + tokens.accessToken;
+      const { accessToken, refreshToken } = await refreshAccessToken(storedRefreshToken);
+      setSession(accessToken, refreshToken);
+      axios.defaults.headers.common.Authorization = 'Bearer ' + accessToken;
       return axiosInstance(originalRequest);
     }
-    if (error.response?.status === 401) {
-      localStorage.removeItem('accessToken');
-    };
     Promise.reject(
       (error.response && error.response.data) || 'Something went wrong',
     )

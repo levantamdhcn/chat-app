@@ -8,16 +8,17 @@ import { CreatedUser } from "../../interfaces/user";
 
 @Route('contact')
 class ContactController {
+  public populate = {
+    path: 'members',
+    select: ['_id', 'firstName', 'lastName', 'email', 'role', 'avatar', 'createdAt', 'updatedAt']
+  }
   constructor() { }
 
   @Get("/")
   public async get(): Promise<IContact[] | undefined> {
-    const contacts = await Contact.find({}).populate({
-      path: 'members',
-      select: ['_id', 'firstName', 'lastName', 'email', 'role', 'avatar', 'createdAt', 'updatedAt']
-    });
+    const contacts = await Contact.find({}).populate(this.populate);
 
-    if(!contacts) {
+    if (!contacts) {
       throw new Error("Query error!");
     }
 
@@ -29,17 +30,16 @@ class ContactController {
     const u = await User.findById(userId);
     if (!u) throw new Error("Invalid user");
 
-    const contacts = await Contact.find({ members: u._id });
-
-    if(!contacts) throw new Error("Invalid contact member");
+    const contacts = await Contact.find({ members: u._id }).populate(this.populate);
+    if (!contacts) throw new Error("Invalid contact member");
 
     return contacts;
   }
 
   @Get("{contactId}")
   public async getContactById(@Path() contactId: string): Promise<IContact | undefined> {
-    if(!contactId) throw new Error("ContactId is required");
-    const contact = await Contact.findById(contactId);
+    if (!contactId) throw new Error("ContactId is required");
+    const contact = await Contact.findById(contactId).populate(this.populate);
 
     if (!contact) throw new Error("ContactId is invalid");
 
@@ -48,7 +48,7 @@ class ContactController {
 
   @Post("/")
   public async create(@Body() data: string, @Inject() user: CreatedUser): Promise<IContact> {
-    if(data === user._id) {
+    if (data === user._id) {
       throw new Error(`Assign contact to yourself!`)
     }
 
@@ -85,7 +85,7 @@ class ContactController {
   @Delete("{contactId}")
   public async deleteContact(@Path() contactId: string): Promise<IContact | undefined> {
     if (!contactId) throw new Error("ContactId is required");
-    const contact = await Contact.findByIdAndDelete(contactId);
+    const contact = await Contact.findByIdAndDelete(contactId).populate(this.populate);
 
     if (!contact) throw new Error("ContactId is invalid");
 

@@ -6,6 +6,8 @@ export type TConversation = {
   name: string,
   members: ExtendedConversationMember[];
   messages: IMessage[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 

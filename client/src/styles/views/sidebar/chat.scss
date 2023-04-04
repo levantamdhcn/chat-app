@@ -55,18 +55,23 @@
 .inbox-list {
   max-height: calc(100vh - 300px);
   .inbox {
+    cursor: pointer;
     width: 100%;
     border-radius: 4px;
     height: 74px;
     display: flex;
     align-items: center;
+    &:hover {
+      background-color: $bg-dark;
+    }
     .sender-avt {
       position: relative;
       margin-right: 16px;
       img {
-        width: 35.2px;
-        height: 35.2px;
+        width: 35.2px !important;
+        height: 35.2px !important;
         border-radius: 50%;
+        max-width: unset !important;
       }
       span {
         position: absolute;
@@ -103,6 +108,10 @@
         margin: 0;
         color: var(--casper-grey);
         font-size: 14px;
+        width: 80%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       p.typing {
         color: $mainColor;

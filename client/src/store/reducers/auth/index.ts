@@ -16,6 +16,7 @@ export const initialState: AuthState = {
   isInitialised: false,
   user: null,
   contacts: [],
+  conversations: [],
 };
 
 export const setSession = (accessToken: string | null, refreshToken: string | null) => {
@@ -55,8 +56,9 @@ export const login = createAsyncThunk(
         const { user, accessToken, refreshToken } = response.data;
         setSession(accessToken, refreshToken);
         const contacts = await axios.get(`${BASE_URL}/api/contact/user/${user._id}`);
+        const conversations = await axios.get(`${BASE_URL}/api/conversation/${user._id}`);
 
-        return { user, contacts };
+        return { user, contacts: contacts.data, conversations: conversations.data };
       } else {
         return thunkAPI.rejectWithValue(data);
       }
@@ -69,15 +71,15 @@ export const login = createAsyncThunk(
 
 export const initialise = createAsyncThunk(`auth/initialise`, async ({ accessToken, refreshToken }: { accessToken: string, refreshToken: string }, thunkAPI) => {
   try {
-    if(!isValidToken(accessToken)) throw new Error("Token is expired");  
     const response = await axios.get(`${BASE_URL}/api/user/currentUser`);
     if (response.data) {
       const user = response.data;
       setSession(accessToken, refreshToken);
 
       const contacts = await axios.get(`${BASE_URL}/api/contact/user/${user._id}`);
+      const conversations = await axios.get(`${BASE_URL}/api/conversation/${user._id}`);
 
-      return { user, contacts };
+      return { user, contacts: contacts.data, conversations: conversations.data };
     } else {
       return thunkAPI.rejectWithValue(accessToken);
     }
@@ -121,6 +123,7 @@ export const slice = createSlice({
       state.isSuccess = true;
       state.user = payload.user;
       state.contacts = payload.contacts;
+      state.conversations = payload.conversations;
       state.isAuthenticated = true;
     },
     [login.fulfilled.type]: (state: AuthState, { payload }: { payload: any }) => {
@@ -128,6 +131,7 @@ export const slice = createSlice({
       state.isSuccess = true;
       state.user = payload.user;
       state.contacts = payload.contacts;
+      state.conversations = payload.conversations;
       state.isAuthenticated = true;
     },
     [login.pending.type]: (state: AuthState) => {

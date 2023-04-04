@@ -1,4 +1,5 @@
 import { IUser } from "../../../types/user";
+import { TConversation } from "../conversation/types";
 
 export interface AuthState {
   isFetching: boolean,
@@ -9,9 +10,10 @@ export interface AuthState {
   isInitialised: boolean;
   user: IUser | null;
   contacts: IContact[];
+  conversations: TConversation[];
 };
 
 export interface IContact {
   _id: string;
-  memebers: IUser[];
+  members: IUser[];
 }

@@ -33,7 +33,7 @@ const ChatList = () => {
           {currentConversation && currentConversation.messages.map((message) => (
             <li
               className={`${
-                user && user.id === message.fromUser ? "right" : ""
+                user && user._id === message.fromUser ? "right" : ""
               }`}
               key={message._id}
             >

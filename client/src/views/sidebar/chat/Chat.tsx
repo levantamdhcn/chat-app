@@ -4,7 +4,6 @@ import ActiveFriend from './ActiveFriend';
 import Avatar from '../../../assets/images/avatar.jpg';
 import Slider from 'react-slick';
 import Inbox from './Inbox';
-import useConversation from '../../../hooks/useConversation';
 import LoadingScreen from '../../../components/LoadingScreen';
 import useAuth from '../../../hooks/useAuth';
 
@@ -13,15 +12,14 @@ const settings = {
   dots: false,
   infinite: true,
   speed: 500,
-  slidesToShow: 4,
-  slidesToScroll: 4,
+  slidesToShow: 1,
+  slidesToScroll: 1,
   arrows: false,
 };
 const Chat = () => {
-  const { conversations, isFetching, isSuccess, isError } = useConversation();
-  const { user } = useAuth();
+  const { user, contacts, isFetching, conversations } = useAuth();
 
-  if(isFetching) return <LoadingScreen />
+  if (isFetching) return <LoadingScreen />;
 
   return (
     <div className="chat">
@@ -33,12 +31,21 @@ const Chat = () => {
       </div>
       <div className="chat-active-friends">
         <Slider {...settings}>
-          <ActiveFriend avatar={Avatar} name={'Doris'} />
-          <ActiveFriend avatar={Avatar} name={'Doris'} />
-          <ActiveFriend avatar={Avatar} name={'Doris'} />
-          <ActiveFriend avatar={Avatar} name={'Doris'} />
-          <ActiveFriend avatar={Avatar} name={'Doris'} />
-          <ActiveFriend avatar={Avatar} name={'Doris'} />
+          {user &&
+            contacts &&
+            contacts.map((contact) => {
+              const otherPerson = contact.members.find(
+                (contact) => contact._id !== user._id
+              );
+              return (
+                <ActiveFriend
+                  avatar={otherPerson?.avatar || Avatar}
+                  name={`${otherPerson?.firstName || ''} ${
+                    otherPerson?.lastName || ''
+                  }`}
+                />
+              );
+            })}
         </Slider>
       </div>
       <div className="chat-recent">
@@ -47,15 +54,25 @@ const Chat = () => {
           {conversations &&
             conversations.length > 0 &&
             conversations.map((conversation) => {
-              const sender = conversation.members.find(el => el.userId !== user?.id);
+              const sender = conversation.members.find(
+                (el) => el.userId !== user?._id
+              );
               const latestMsg = conversation.messages.at(-1);
-              
+
               return (
                 <Inbox
+                conversation={conversation}
                   senderAvatar={sender?.avatar || Avatar}
-                  senderName={`${sender?.firstName || ""} ${sender?.lastName || ""}`}
-                  latestMsg={latestMsg?.messageText || ""}
-                  latestMsgTime={latestMsg?.createdAt || ""}
+                  senderName={`${sender?.firstName || ''} ${
+                    sender?.lastName || ''
+                  }`}
+                  latestMsg={
+                    latestMsg?.messageText ||
+                    `This is the first message to ${sender?.firstName || ''} ${
+                      sender?.lastName || ''
+                    }`
+                  }
+                  latestMsgTime={latestMsg?.createdAt || conversation.createdAt}
                 />
               );
             })}

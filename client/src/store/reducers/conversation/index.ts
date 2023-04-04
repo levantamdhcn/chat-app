@@ -94,4 +94,4 @@ export const slice = createSlice({
   }
 });
 
-export const { clearState } = slice.actions;
+export const { clearState, setConversation } = slice.actions;

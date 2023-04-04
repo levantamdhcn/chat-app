@@ -13,8 +13,8 @@ export class AuthService {
     accessToken: string,
     refreshToken: string
   } {
-    const accessToken = JWT.sign(payload.toJSON(), config.env.SECRET_KEY, { expiresIn: config.env.JWT_ACCESS_EXPIRE });
-    const refreshToken = JWT.sign(payload.toJSON(), config.env.REFRESH_KEY, { expiresIn: config.env.JWT_REFRESH_EXPIRE });
+    const accessToken = JWT.sign(payload, config.env.SECRET_KEY, { expiresIn: config.env.JWT_ACCESS_EXPIRE });
+    const refreshToken = JWT.sign(payload, config.env.REFRESH_KEY, { expiresIn: config.env.JWT_REFRESH_EXPIRE });
 
     return {
       accessToken,
@@ -24,12 +24,13 @@ export class AuthService {
 
   static verifyAccessToken(token: string): Promise<{ _id: string }> {
     const tokenData = JWT.verify(token, config.env.SECRET_KEY);
+    const result: any = new Object();
     // @ts-ignore
     return { _id: tokenData._id };
   }
 
   static verifyRefreshToken(token: string): Promise<{ _id: string }> {
-    const tokenData = JWT.verify(token, config.env.SECRET_KEY);
+    const tokenData = JWT.verify(token, config.env.REFRESH_KEY);
     // @ts-ignore
     return { _id: tokenData._id };
   }

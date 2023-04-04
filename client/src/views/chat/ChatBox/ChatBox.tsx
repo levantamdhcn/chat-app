@@ -8,6 +8,7 @@ import useConversation from "../../../hooks/useConversation";
 import { useDispatch } from "react-redux";
 import { sendMessage } from "../../../store/reducers/conversation";
 import { ThunkDispatch } from "redux-thunk";
+import { TConversation } from "../../../store/reducers/conversation/types";
 
 const actions = [
   {
@@ -40,9 +41,12 @@ export type MessageInput = {
   conversationId: string | undefined;
 };
 
-const ChatBox = () => {
+export interface IChatBoxProps {
+  conversation: TConversation;
+}
+
+const ChatBox = ({ conversation }: IChatBoxProps ) => {
   const { user } = useAuth();
-  const { currentConversation } = useConversation();
   const messageRef = useRef<HTMLInputElement>(null);
   const [openEmojiPicker, setOpenEmojiPicker] = React.useState(false);
   const [message, setMessage] = useState<
@@ -58,14 +62,16 @@ const ChatBox = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setMessage(event.target.value);
 
+  const partner = conversation.members.find(el => el._id !== user?._id);
+
   const handleSendMessage = () => {
     if (!message) return;
     const newMessage = {
-      fromUser: user?.id,
+      fromUser: user?._id,
       toUser: "1",
       type: "text",
       messageText: message as string,
-      conversationId: currentConversation?._id,
+      conversationId: conversation?._id,
     };
 
     dispatch(sendMessage({ data: newMessage }));
@@ -77,8 +83,8 @@ const ChatBox = () => {
     <div className="chat-box">
       <div className="chat-box-header">
         <div className="chat-box-header-left">
-          <img src={Avatar} alt="" className="active-friend-avt" />
-          <div className="friend-name">Patrick Hendricks</div>
+          <img src={partner?.avatar || Avatar} alt="" className="active-friend-avt" />
+          <div className="friend-name">{partner?.firstName || ""} {partner?.lastName || ""}</div>
           <span className="icon-circle-fullfil active"></span>
         </div>
         <div className="chat-box-header-right">
