@@ -93,13 +93,13 @@ class UserController implements IUserService {
     return await User.find({
       $or: [
         {
-          firstName: { $regex: searchValue, $options: "i" },
+          firstName: { $regex: '.*' + searchValue + '.*'  },
         },
         {
-          lastName: { $regex: searchValue, $options: "i" },
+          lastName: { $regex: '.*' + searchValue + '.*'  },
         },
         {
-          email: { $regex: searchValue, $options: "i" }
+          email: { $regex: '.*' + searchValue + '.*'  }
         }
       ],
     })
