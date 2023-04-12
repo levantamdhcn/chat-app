@@ -3,6 +3,7 @@ export interface IMessage {
     fromUser: string;
     toUser: string;
     type: string;
+    file: string;
     messageText: string;
     conversationId: string;
 }
@@ -12,6 +13,15 @@ export type IMessageSend = {
     toUser: string;
     type: string;
     messageText: string;
+    file: any;
+    conversationId: string;
+}
+
+export interface IFileSend {
+    fromUser: string;
+    toUser: string;
+    type: string;
+    file: any;
     conversationId: string;
 }
 

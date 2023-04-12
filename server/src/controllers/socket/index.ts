@@ -1,12 +1,19 @@
+const ss = require('socket.io-stream');
+
+import fs from "fs";
+import path from "path";
 import { Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { AuthService } from "../../services/auth";
 
 import { ErrorEnum } from "../../interfaces/ErrorHandler";
-import { IMessageSend } from "../../interfaces/message";
+import { IFileSend, IMessageSend } from "../../interfaces/message";
 import ISocket, { SocketEventsEnum } from "../../interfaces/socket";
 import CONVERSATION from "../../models/conversation";
 import MESSAGE from "../../models/message";
+import { cloudinaryInstance } from "../../utils/cloudinary";
+import config from "../../config";
+import { ReadableStream } from "node:stream/web";
 
 var onlineUsers: Map<any, any> = new Map<any, any>();
 export class ChatSocket implements ISocket {
@@ -24,21 +31,22 @@ export class ChatSocket implements ISocket {
 
     socket.on(SocketEventsEnum.MSG_SEND, async (data) => {
       try {
-        const messageData: IMessageSend = JSON.parse(data);
+        const messageData: IMessageSend = data;
         const chatData = {
           sender: socket.data.userId,
           conversationId: messageData.conversationId,
         }
 
-        const conversation = CONVERSATION.findOne({ _id: chatData.conversationId });
+        const conversation = await CONVERSATION.findOne({ _id: chatData.conversationId });
         if (!conversation) throw new Error("Conversation not found");
 
         const newMsg = new MESSAGE(messageData);
         const savedMsg = await newMsg.save();
 
-        const conversationSocketId = onlineUsers.get('conversationId');
-        if (conversationSocketId) {
-          socket.to(conversationSocketId).emit(SocketEventsEnum.MSG_RECEIVE, savedMsg);
+        const currentSocketRoom = onlineUsers.get('currentSocketRoom');
+
+        if (currentSocketRoom) {
+          socket.to(currentSocketRoom).emit(SocketEventsEnum.MSG_RECEIVE, savedMsg);
         };
       } catch (error) {
         socket.emit(SocketEventsEnum.ERROR, error instanceof Error ? error.message : error);
@@ -46,9 +54,9 @@ export class ChatSocket implements ISocket {
       }
     })
 
-    socket.on(SocketEventsEnum.MSG_SEND_FILE, async (data) => {
+    socket.on(SocketEventsEnum.MSG_SEND_FILE, async (fileData: IFileSend) => {
       try {
-        const messageData: IMessageSend = JSON.parse(data);
+        const messageData = fileData;
         const chatData = {
           sender: socket.data.userId,
           conversationId: messageData.conversationId,
@@ -56,6 +64,12 @@ export class ChatSocket implements ISocket {
 
         const conversation = CONVERSATION.findOne({ _id: chatData.conversationId });
         if (!conversation) throw new Error("Conversation not found");
+
+        const cloudPath = `${config.CLOUDINARY.FOLDER_NAME}/conversation_data/${chatData.conversationId}`;
+        // const { isSuccess, imageURL } = await cloudinaryInstance.uploadImage(localFilePath, cloudPath);
+        // if (isSuccess) {
+        //   messageData.file = imageURL;
+        // };
 
         const newMsg = new MESSAGE(messageData);
         const savedMsg = await newMsg.save();
@@ -80,7 +94,7 @@ export class ChatSocket implements ISocket {
       if (!userData) return next(new Error(ErrorEnum.unauthorized));
 
       onlineUsers.set('userId', userData._id);
-      onlineUsers.set('conversationId', socket.id);
+      onlineUsers.set('currentSocketRoom', socket.id);
       socket.data.userId = userData._id;
 
       next();

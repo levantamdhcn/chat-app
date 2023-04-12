@@ -25,6 +25,9 @@ const messageSchema = new mongoose.Schema({
   messageText: {
     type: String,
   },
+  file: {
+    type: String,
+  },
   conversationId: {
     type: Schema.Types.ObjectId,
   },
