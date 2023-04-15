@@ -1,11 +1,12 @@
 import moment from 'moment';
 import React from 'react';
 import DotLoading from '../../../../components/DotLoading';
-import useConversation from '../../../../hooks/useConversation';
 import { isThisMonth, isThisWeek, isToday } from '../../../../utils/helpers';
 import { setConversation } from '../../../../store/reducers/conversation';
 import { TConversation } from '../../../../store/reducers/conversation/types';
 import { useDispatch } from 'react-redux';
+import useConversation from '../../../../hooks/useConversation';
+
 interface InboxProp {
   conversation: TConversation;
   senderAvatar: string;
@@ -14,6 +15,7 @@ interface InboxProp {
   latestMsgTime: Date;
   unreadMsgCount?: number;
   isTyping?: boolean;
+  onClick: (arg: any) => void;
 }
 
 const Inbox = ({
@@ -24,28 +26,35 @@ const Inbox = ({
   latestMsgTime,
   unreadMsgCount,
   isTyping,
+  onClick,
 }: InboxProp) => {
-  const dispatch = useDispatch();
+  const { currentConversation } = useConversation();
+
   const getDateString = (date: Date) => {
     const formattedDate = new Date(date);
 
-    if(isToday(formattedDate)) {
-      return moment(date).format("h:mm A");
-    } if(isThisWeek(formattedDate)) {
-      return moment(date).format("ddd D");
-    } if(isThisMonth(date)) {
-      return moment(date).format("MMMM D");
+    if (isToday(formattedDate)) {
+      return moment(date).format('h:mm A');
+    }
+    if (isThisWeek(formattedDate)) {
+      return moment(date).format('ddd D');
+    }
+    if (isThisMonth(formattedDate)) {
+      return moment(date).format('MMMM D');
     } else {
-      return moment(date).format("MM/DD/YYYY");
+      return moment(date).format('MM/DD/YYYY');
     }
   };
 
-  const handleClick = () => {
-    dispatch(setConversation(conversation));
-  }
-
   return (
-    <div className="inbox" onClick={handleClick}>
+    <div
+      className={`inbox ${
+        currentConversation && currentConversation._id === conversation._id
+          ? 'active'
+          : ''
+      }`}
+      onClick={onClick}
+    >
       <div className="sender-avt">
         <img src={senderAvatar} alt="sender-avatar" />
         <span className="icon-circle-fullfil active"></span>

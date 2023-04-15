@@ -1,7 +1,10 @@
 .chat {
-  padding: 0 24px;
   &-active-friends {
     padding-bottom: 24px;
+  }
+
+  &-top {
+    padding: 0 24px;
   }
 }
 
@@ -44,6 +47,7 @@
 
 .chat-recent {
   &-title {
+    padding: 0 24px;
     font-size: 16px;
     font-weight: 600;
     text-transform: capitalize;
@@ -53,8 +57,13 @@
 }
 
 .inbox-list {
+  padding: 0 12px;
   max-height: calc(100vh - 300px);
   .inbox {
+    &.active {
+      background-color: $bg-dark;
+    }
+    padding: 0 12px;
     cursor: pointer;
     width: 100%;
     border-radius: 4px;

@@ -13,8 +13,9 @@ export class AuthService {
     accessToken: string,
     refreshToken: string
   } {
-    const accessToken = JWT.sign(payload, config.env.SECRET_KEY, { expiresIn: config.env.JWT_ACCESS_EXPIRE });
-    const refreshToken = JWT.sign(payload, config.env.REFRESH_KEY, { expiresIn: config.env.JWT_REFRESH_EXPIRE });
+    console.log('typeof', typeof payload);
+    const accessToken = JWT.sign(JSON.parse(JSON.stringify(payload)), config.env.SECRET_KEY, { expiresIn: config.env.JWT_ACCESS_EXPIRE });
+    const refreshToken = JWT.sign(JSON.parse(JSON.stringify(payload)), config.env.REFRESH_KEY, { expiresIn: config.env.JWT_REFRESH_EXPIRE });
 
     return {
       accessToken,

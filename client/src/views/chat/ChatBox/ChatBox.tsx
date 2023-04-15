@@ -68,7 +68,7 @@ const ChatBox = ({ conversation }: IChatBoxProps ) => {
     if (!message) return;
     const newMessage = {
       fromUser: user?._id,
-      toUser: "1",
+      toUser: partner?._id,
       type: "text",
       messageText: message as string,
       conversationId: conversation?._id,
@@ -97,7 +97,7 @@ const ChatBox = ({ conversation }: IChatBoxProps ) => {
           })}
         </div>
       </div>
-      <div className="chat-box-content">
+      <div className="chat-box-content scroll-overflow">
         <ChatList />
       </div>
       <div className="chat-box-footer">

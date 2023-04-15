@@ -71,6 +71,18 @@ class ConversationController {
           "status",
           "role"
         ]
+      }).populate({
+        path: 'messages',
+        select: [
+          "_id",
+          "fromUser",
+          "toUser",
+          "type",
+          "messageText",
+          "conversationId",
+          "createdAt",
+          "updatedAt"
+        ]
       });
 
       return conversation;

@@ -20,14 +20,11 @@ export const slice = createSlice({
     },
     setTypingUser: (state, { payload }) => {
       state.typingUsers = [payload, ...[...state.typingUsers].filter(username => username !== payload)]
-    },
-    addMessage: (state, { payload }) => {
-      state.messages = state.messages.concat(payload);
-    },
+    }
   },
   extraReducers: {
 
   }
 });
 
-export const { setOnlineUsersByUsername, removeTypingUser, setTypingUser, addMessage, clearState } = slice.actions;
+export const { setOnlineUsersByUsername, removeTypingUser, setTypingUser, clearState } = slice.actions;

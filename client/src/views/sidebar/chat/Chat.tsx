@@ -1,11 +1,15 @@
 import React from 'react';
+import useAuth from '../../../hooks/useAuth';
+import { useDispatch } from 'react-redux';
+import { setConversation } from '../../../store/reducers/conversation';
+
 import Search from '../../../components/Search';
 import ActiveFriend from './ActiveFriend';
 import Avatar from '../../../assets/images/avatar.jpg';
 import Slider from 'react-slick';
 import Inbox from './Inbox';
 import LoadingScreen from '../../../components/LoadingScreen';
-import useAuth from '../../../hooks/useAuth';
+import useConversation from '../../../hooks/useConversation';
 
 const settings = {
   accessibility: false,
@@ -16,11 +20,21 @@ const settings = {
   slidesToScroll: 1,
   arrows: false,
 };
+
 const Chat = () => {
-  const { user, contacts, isFetching, conversations } = useAuth();
+  const { user, contacts, isFetching } = useAuth();
+  const { conversations } = useConversation();
+  const dispatch = useDispatch();
+  
+  React.useEffect(() => {
+    const lastestConversation = conversations[0];
+    console.log('lastestConversation', lastestConversation);
+    if(lastestConversation) {
+      dispatch(setConversation(lastestConversation));
+    }
+  }, [conversations]);
 
   if (isFetching) return <LoadingScreen />;
-
   return (
     <div className="chat">
       <div className="tab-content-header">
@@ -59,9 +73,13 @@ const Chat = () => {
               );
               const latestMsg = conversation.messages.at(-1);
 
+              const handleSelectInbox = () => {
+                dispatch(setConversation(conversation));
+              }
+
               return (
                 <Inbox
-                conversation={conversation}
+                  conversation={conversation}
                   senderAvatar={sender?.avatar || Avatar}
                   senderName={`${sender?.firstName || ''} ${
                     sender?.lastName || ''
@@ -73,6 +91,7 @@ const Chat = () => {
                     }`
                   }
                   latestMsgTime={latestMsg?.createdAt || conversation.createdAt}
+                  onClick={handleSelectInbox}
                 />
               );
             })}

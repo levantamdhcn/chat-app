@@ -10,4 +10,5 @@ export enum SOCKET_EVENTS {
     TYPING = "typing",
     STOP_TYPING = 'stop_typing',
     NEW_LOGIN = 'new_login',
+    JOIN_ROOM = 'join_room'
 }

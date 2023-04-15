@@ -1,8 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "./../../../configuration/axios";
 import { IConversationState, TConversation } from "./types";
-import { IMessage } from "../../../types/message";
-import { MessageInput } from "../../../views/chat/ChatBox/ChatBox";
 
 const BASE_URL = process.env.REACT_APP_SERVER_ENDPOINT as string;
 
@@ -17,22 +15,6 @@ export const initialState: IConversationState = {
   isMsgSendError: false,
   errorMessage: "",
 };
-
-export const sendMessage = createAsyncThunk(
-  `message/send`, async ({ data }: { data: MessageInput }, thunkAPI): Promise<IMessage | unknown> => {
-    try {
-      const response = await axios.post(`${BASE_URL}/api/message`, data);
-      if (response.data) {
-        return response.data;
-      } else {
-        return thunkAPI.rejectWithValue(data);
-      }
-    } catch (error) {
-      console.log(error);
-      return thunkAPI.rejectWithValue(data);
-    }
-  }
-);
 
 export const getConversations = createAsyncThunk(`conversation/getAll`, async ({ userId }: { userId: string }, thunkAPI): Promise<TConversation[] | unknown> => {
   try {
@@ -49,7 +31,7 @@ export const getConversations = createAsyncThunk(`conversation/getAll`, async ({
 
 
 export const slice = createSlice({
-  name: 'message',
+  name: 'conversation',
   initialState,
   reducers: {
     clearState: () => initialState,
@@ -58,23 +40,42 @@ export const slice = createSlice({
     },
     setConversations: (state, { payload }) => {
       state.conversations = payload;
-    }
-  },
-  extraReducers: {
-    [sendMessage.pending.type]: (state: IConversationState, { payload }) => {
-      state.isMsgSending = true;
     },
-    [sendMessage.fulfilled.type]: (state: IConversationState, { payload }) => {
+    sendMessage: (state, { payload }) => {
+      console.log("payload", payload)
       state.isMsgSending = false;
-      state.currentConversation?.messages.push(payload);
+      if (state.currentConversation) {
+        state.currentConversation = {
+          ...state.currentConversation,
+          messages: state.currentConversation.messages.concat([payload.data]),
+        }
+
+        state.conversations = state.conversations.map(el => {
+          if (el._id === state.currentConversation?._id) {
+            return state.currentConversation;
+          }
+          return el;
+        });
+      };
       state.isMsgSendSuccess = true;
     },
-    [sendMessage.rejected.type]: (state: IConversationState, { payload }) => {
-      state.isMsgSendError = false;
-      state.isMsgSendSuccess = false;
-      state.isMsgSendError = true;
-      state.errorMessage = payload;
+    addMessage: (state, { payload }) => {
+      if (state.currentConversation) {
+        state.currentConversation = {
+          ...state.currentConversation,
+          messages: state.currentConversation.messages.concat([payload]),
+        }
+
+        state.conversations = state.conversations.map(el => {
+          if (el._id === state.currentConversation?._id) {
+            return state.currentConversation;
+          }
+          return el;
+        });
+      };
     },
+  },
+  extraReducers: {
     [getConversations.pending.type]: (state: IConversationState, { payload }) => {
       state.isFetching = true;
     },
@@ -94,4 +95,4 @@ export const slice = createSlice({
   }
 });
 
-export const { clearState, setConversation } = slice.actions;
+export const { clearState, setConversation, setConversations, sendMessage, addMessage } = slice.actions;

@@ -1,5 +1,6 @@
 import { Dispatch } from "@reduxjs/toolkit"
-import { addMessage, removeTypingUser, setOnlineUsersByUsername, setTypingUser } from "../../store/reducers/socket"
+import { removeTypingUser, setOnlineUsersByUsername, setTypingUser } from "../../store/reducers/socket";
+import { addMessage } from "../../store/reducers/conversation";
 import { SOCKET_EVENTS } from "../../types/constane"
 import { IMessage } from "../../types/message"
 import SocketClient from "../socketClient"
@@ -30,6 +31,7 @@ export default function socketMiddlerware(socket: SocketClient) {
 
         // Append a message every time a new one comes in
         socket.on(SOCKET_EVENTS.MSG_RECEIVE, (message: IMessage) => {
+          console.log('recieve', message);
           dispatch(addMessage(message))
         })
         
@@ -47,6 +49,14 @@ export default function socketMiddlerware(socket: SocketClient) {
         // Add the current user to the online users list
         socket.emit(SOCKET_EVENTS.NEW_LOGIN, payload)
         break;
+
+      //Join room
+      case 'conversation/setConversation': {
+        socket.emit(SOCKET_EVENTS.JOIN_ROOM, {
+          content: payload
+        });
+        break;
+      }
       // Telling the sever that this user is typing...
       case 'socket/sendThisUserIsTyping': {
         socket.emit(SOCKET_EVENTS.TYPING, payload)
@@ -65,9 +75,8 @@ export default function socketMiddlerware(socket: SocketClient) {
         break;
       }
       // Let the server be the source of truth for all messages; don't dispatch anything
-      case 'conversation/sendMessage/fulfilled': {
+      case 'conversation/sendMessage': {
         socket.emit(SOCKET_EVENTS.MSG_SEND, {
-          to: payload._id,
           content: payload.data
         })
 
