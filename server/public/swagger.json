@@ -99,6 +99,57 @@
 			"IUserResponse": {
 				"$ref": "#/components/schemas/Omit_CreatedUser.password-or-reset_password_token-or-confirmationCode_"
 			},
+			"CreatedUser": {
+				"properties": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"avatar": {
+						"type": "string"
+					},
+					"isEmailVerified": {
+						"type": "boolean"
+					},
+					"role": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"reset_password_token": {
+						"type": "string"
+					},
+					"confirmationCode": {
+						"type": "string"
+					},
+					"_id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"firstName",
+					"lastName",
+					"email",
+					"password",
+					"isEmailVerified",
+					"role",
+					"status",
+					"reset_password_token",
+					"confirmationCode",
+					"_id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IConversation": {
 				"properties": {
 					"_id": {
@@ -203,6 +254,25 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"IContact": {
+				"properties": {
+					"_id": {
+						"type": "string"
+					},
+					"members": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"_id",
+					"members"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -232,13 +302,17 @@
 										"user": {
 											"$ref": "#/components/schemas/IUser"
 										},
-										"token": {
+										"refreshToken": {
+											"type": "string"
+										},
+										"accessToken": {
 											"type": "string"
 										}
 									},
 									"required": [
 										"user",
-										"token"
+										"refreshToken",
+										"accessToken"
 									],
 									"type": "object"
 								}
@@ -273,13 +347,17 @@
 										"user": {
 											"$ref": "#/components/schemas/IUser"
 										},
-										"token": {
+										"refreshToken": {
+											"type": "string"
+										},
+										"accessToken": {
 											"type": "string"
 										}
 									},
 									"required": [
 										"user",
-										"token"
+										"refreshToken",
+										"accessToken"
 									],
 									"type": "object"
 								}
@@ -311,6 +389,46 @@
 						}
 					}
 				}
+			}
+		},
+		"/auth/refreshToken/{refreshToken}": {
+			"post": {
+				"operationId": "Refresh",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"refreshToken": {
+											"type": "string"
+										},
+										"accessToken": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"refreshToken",
+										"accessToken"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "refreshToken",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/auth/confirm/{confirmationCode}": {
@@ -450,6 +568,37 @@
 					{
 						"in": "path",
 						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/user/search/{searchValue}": {
+			"get": {
+				"operationId": "Search",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/CreatedUser"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "searchValue",
 						"required": true,
 						"schema": {
 							"type": "string"
@@ -628,6 +777,140 @@
 					{
 						"in": "path",
 						"name": "conversationId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/contact": {
+			"get": {
+				"operationId": "Get",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IContact"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IContact"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/contact/user/{userId}": {
+			"get": {
+				"operationId": "GetContactByUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IContact"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/contact/{contactId}": {
+			"get": {
+				"operationId": "GetContactById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IContact"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "contactId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteContact",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IContact"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "contactId",
 						"required": true,
 						"schema": {
 							"type": "string"
