@@ -1,12 +1,11 @@
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import InputCheckbox from "../../../components/Form/InputCheckbox";
 import InputPassword from "../../../components/Form/InputPassword";
 import InputText from "../../../components/Form/InputText";
 import LoadingScreen from "../../../components/LoadingScreen";
-import { AppDispatch } from "../../../configuration/store";
 import useAuth from "../../../hooks/useAuth";
 import { login } from "../../../store/reducers/auth";
 
@@ -24,7 +23,7 @@ const Login = () => {
 
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
-  const { isFetching, isSuccess, isError } = useAuth();
+  const { isFetching, isSuccess, isError, errorMessage } = useAuth();
 
   const navigate = useNavigate();
 
@@ -33,7 +32,7 @@ const Login = () => {
       navigate("/");
     }
     if (isError) {
-      setError("error");
+      setError(errorMessage);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFetching]);
@@ -68,7 +67,7 @@ const Login = () => {
           value={data.password}
           setValue={(e) => setField("password", e.target.value)}
         />
-        {error !== "" && <span>{error}</span>}
+        {error !== "" && <span className="mb-4 block text-red-400">{error}</span>}
         <InputCheckbox onChange={() => {}} label={"Remember me"} />
 
         {isFetching ? (

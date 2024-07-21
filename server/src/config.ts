@@ -11,8 +11,9 @@ export default {
     APP_HOST: process.env.HOST,
     SECRET_KEY: process.env.ACCESS_SECRET_KEY || "",
     REFRESH_KEY: process.env.REFRESH_SECRET_KEY || "",
-    JWT_ACCESS_EXPIRE: process.env.JWT_ACCESS_EXPIRE,
-    JWT_REFRESH_EXPIRE: process.env.JWT_REFRESH_EXPIRE,
+    JWT_ACCESS_EXPIRE: process.env.JWT_ACCESS_EXPIRE || 900000,
+    // 15 minutes
+    JWT_REFRESH_EXPIRE: process.env.JWT_REFRESH_EXPIRE || "3d",
   },
   MONGO_URL: {
     String: process.env.MONGO_URL || "",

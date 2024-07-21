@@ -18,7 +18,6 @@ const settings = {
 };
 const Chat = () => {
   const { user, contacts, isFetching, conversations } = useAuth();
-
   if (isFetching) return <LoadingScreen />;
 
   return (
@@ -32,7 +31,7 @@ const Chat = () => {
       <div className="chat-active-friends">
         <Slider {...settings}>
           {user &&
-            contacts &&
+            contacts?.map &&
             contacts.map((contact) => {
               const otherPerson = contact.members.find(
                 (contact) => contact._id !== user._id

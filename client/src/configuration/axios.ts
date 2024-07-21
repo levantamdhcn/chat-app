@@ -15,7 +15,6 @@ axiosInstance.interceptors.request.use(function (config) {
   config.baseURL = `${process.env.REACT_APP_SERVER_ENDPOINT}/api`;
 
   const token = localStorage.getItem('accessToken');
-  console.log('token', token);
   config.headers.Authorization = `Bearer ${token}`;
   config.headers.Accept = 'application/json';
   config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
@@ -30,7 +29,7 @@ axiosInstance.interceptors.response.use(
   async error => {
     const storedRefreshToken = localStorage.getItem('refreshToken');
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry && storedRefreshToken) {
+    if (error?.response?.status === 401 && !originalRequest._retry && storedRefreshToken) {
       if (!isValidToken(storedRefreshToken)) {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
@@ -41,9 +40,7 @@ axiosInstance.interceptors.response.use(
       axios.defaults.headers.common.Authorization = 'Bearer ' + accessToken;
       return axiosInstance(originalRequest);
     }
-    Promise.reject(
-      (error.response && error.response.data) || 'Something went wrong',
-    )
+    return error.response;
   }
 );
 

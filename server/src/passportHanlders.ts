@@ -1,5 +1,4 @@
 import passport from "passport";
-import bcrypt from "bcrypt";
 import passportLocal from "passport-local";
 import passportJwt from "passport-jwt";
 import USER from "./models/user";

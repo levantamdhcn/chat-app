@@ -5,7 +5,7 @@ interface SearchProp {
 }
 
 const Search = ({ placeholder}: SearchProp) => {
-    const [value, setValue] = useState("")
+    const [, setValue] = useState("")
   return (
       <div className="search-wrapper">
           <div className="search-btn">

@@ -45,7 +45,7 @@ class User {
       }
     });
 
-    this.rout.put("/:userId", authMiddleware,async (req: Request, res: Response, next: NextFunction) => {
+    this.rout.put("/:userId", async (req: Request, res: Response, next: NextFunction) => {
       try {
         let localFilePath = req.file?.path || "";
         const result = await this.controller.update(req.body, req.params.userId, localFilePath);

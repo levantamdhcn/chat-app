@@ -1,13 +1,12 @@
 import mongoose from "mongoose";
 import validator from "validator";
-import { CreatedUser, IUser, roles, status } from "../interfaces/user";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import config from "../config";
+
+import { CreatedUser, IUser, roles, status } from "../interfaces/user";
 
 // Put all user instance methods in this interface:
 export interface IUserMethods {
-  validPassword(password: string): Promise<any>;
+  validPassword(password: string): boolean;
 }
 
 // Create a new Model type that knows about IUserMethods...
@@ -91,8 +90,10 @@ userSchema.pre("save", function (next) {
 });
 
 // Checks if password is valid
-userSchema.methods.validPassword = async function (password: string) {
-  return await bcrypt.compare(password.toString(), this.password);
+userSchema.methods.validPassword = function (password: string) {
+  console.log('origin', password.toString())
+  console.log('password', this.password)
+  return bcrypt.compareSync(password, this.password);
 };
 
 const User = mongoose.model<CreatedUser, UserModel>("User", userSchema);

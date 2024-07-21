@@ -3,11 +3,11 @@ import React from 'react';
 interface InputPasswordProp {
     label: string
     setValue: (e: any) => void
-    value: string
+    value?: string
     placeholder: string
     disabled?: boolean
 }
-const InputPassword = ({ label, setValue, placeholder, disabled }: InputPasswordProp) => {
+const InputPassword = ({ value, label, setValue, placeholder, disabled }: InputPasswordProp) => {
   return (
     <div className='custom-input'>
         <label htmlFor="" className="custom-input-label">{label}</label>
@@ -16,6 +16,7 @@ const InputPassword = ({ label, setValue, placeholder, disabled }: InputPassword
             placeholder={placeholder}
             onChange={setValue}
             disabled={disabled}
+            value={value}
             className="custom-input-field"
         />
     </div>  

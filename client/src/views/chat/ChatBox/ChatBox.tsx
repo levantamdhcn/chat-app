@@ -4,7 +4,6 @@ import Avatar from "../../../assets/images/avatar.jpg";
 import ChatList from "../ChatList";
 import EmojiPickerCustom from "./EmojiPickerCustom";
 import useAuth from "../../../hooks/useAuth";
-import useConversation from "../../../hooks/useConversation";
 import { useDispatch } from "react-redux";
 import { sendMessage } from "../../../store/reducers/conversation";
 import { ThunkDispatch } from "redux-thunk";

@@ -1,6 +1,4 @@
 import React from 'react';
-import NavBar from '../../views/sidebar/nav/NavBar';
-import TabContent from '../../views/sidebar';
 import { Outlet } from 'react-router-dom';
 
 const MainLayout = () => {

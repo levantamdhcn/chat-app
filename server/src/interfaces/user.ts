@@ -11,6 +11,8 @@ export interface IUser {
   confirmationCode: string;
 }
 
+export type ICreateUserDto = Omit<IUser, 'isEmailVerified' | 'status' | 'reset_password_token' | 'confirmationCode'>;
+
 export type IUserResponse = Omit<CreatedUser, 'password' | 'reset_password_token' | 'confirmationCode'>;
 
 export enum roles {

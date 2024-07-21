@@ -4,6 +4,7 @@ import { RegisterInput } from "../../../types/api";
 import { SigninInput } from "../../../views/auth/Login";
 import { AuthState } from "./types";
 import jwtDecode from "jwt-decode";
+import { SignUpInput } from "../../../views/auth/SignUp";
 
 const BASE_URL = process.env.REACT_APP_SERVER_ENDPOINT as string;
 
@@ -52,7 +53,7 @@ export const login = createAsyncThunk(
   `auth/login`, async ({ data }: { data: SigninInput }, thunkAPI) => {
     try {
       const response = await axios.post(`${BASE_URL}/api/auth/login`, data);
-      if (response.data) {
+      if (response.data.user) {
         const { user, accessToken, refreshToken } = response.data;
         setSession(accessToken, refreshToken);
         const contacts = await axios.get(`${BASE_URL}/api/contact/user/${user._id}`);
@@ -60,7 +61,7 @@ export const login = createAsyncThunk(
 
         return { user, contacts: contacts.data, conversations: conversations.data };
       } else {
-        return thunkAPI.rejectWithValue(data);
+        return thunkAPI.rejectWithValue(response.data);
       }
     } catch (error) {
       console.log(error);

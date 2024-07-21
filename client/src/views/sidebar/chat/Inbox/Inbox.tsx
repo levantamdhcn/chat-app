@@ -1,7 +1,6 @@
-import moment from 'moment';
 import React from 'react';
+import moment from 'moment';
 import DotLoading from '../../../../components/DotLoading';
-import useConversation from '../../../../hooks/useConversation';
 import { isThisMonth, isThisWeek, isToday } from '../../../../utils/helpers';
 import { setConversation } from '../../../../store/reducers/conversation';
 import { TConversation } from '../../../../store/reducers/conversation/types';

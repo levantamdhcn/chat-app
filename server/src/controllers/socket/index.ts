@@ -14,6 +14,7 @@ import MESSAGE from "../../models/message";
 import { cloudinaryInstance } from "../../utils/cloudinary";
 import config from "../../config";
 import { ReadableStream } from "node:stream/web";
+import { JwtPayload } from "jsonwebtoken";
 
 var onlineUsers: Map<any, any> = new Map<any, any>();
 export class ChatSocket implements ISocket {
@@ -89,13 +90,11 @@ export class ChatSocket implements ISocket {
     try {
       if (!socket.handshake.headers.authorization) return next(new Error(ErrorEnum.authorization));
 
-      const userData = await AuthService.verifyAccessToken(socket.handshake.headers.authorization);
+      const { err, result } = AuthService.verifyAccessToken(socket.handshake.headers.authorization);
 
-      if (!userData) return next(new Error(ErrorEnum.unauthorized));
+      if (err) return next(new Error(ErrorEnum.unauthorized));
 
-      onlineUsers.set('userId', userData._id);
-      onlineUsers.set('currentSocketRoom', socket.id);
-      socket.data.userId = userData._id;
+      socket.data.userId = (result as JwtPayload)._id;
 
       next();
 

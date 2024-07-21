@@ -1,5 +1,6 @@
 import { Get, Inject } from "@tsoa/runtime";
 import { Route, Body, Put, Delete, Path } from "tsoa";
+import bcrypt from "bcrypt";
 import { CreatedUser, IUser, IUserResponse } from "../../interfaces/user";
 import User from "../../models/user";
 import IUserService from "../../services/user";
@@ -38,7 +39,7 @@ class UserController implements IUserService {
   };
 
   @Put("{userId}")
-  public async update(@Body() data: IUser, userId: string, @Inject() localFilePath: string): Promise<IUserResponse | undefined> {
+  public async update(@Body() data: Partial<IUser>, userId: string, @Inject() localFilePath: string): Promise<IUserResponse | undefined> {
     try {
       const u = await User.findById(userId);
       if (!u) {
@@ -51,6 +52,12 @@ class UserController implements IUserService {
         if(isSuccess) {
           data.avatar = imageURL;
         };
+      }
+      
+      // Hash the password with a salt
+      if(data.password) {
+        const hash = bcrypt.hashSync(data.password, bcrypt.genSaltSync(8));
+        data.password = hash;
       }
       
       const updatedU = await User.findByIdAndUpdate(userId, data, { new: true });

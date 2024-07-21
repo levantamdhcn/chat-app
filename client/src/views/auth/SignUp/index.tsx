@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+
 import InputCheckbox from "../../../components/Form/InputCheckbox";
 import InputPassword from "../../../components/Form/InputPassword";
 import InputText from "../../../components/Form/InputText";
+import { register } from "../../../store/reducers/auth";
 
-export interface SignupInput {
+export interface SignUpInput {
   firstName: string;
   lastName: string;
   email: string;
@@ -18,12 +22,18 @@ const Signup = () => {
     password: "",
   })
 
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+
   const setField = (field: string,  value: string) => {
     setData({
       ...data,
       [field]: value
     })
   }
+
+  const onSubmit = () => {
+    dispatch(register({ data }));
+  };
 
   return (
     <div className="login">
@@ -58,7 +68,7 @@ const Signup = () => {
         />
         <InputCheckbox onChange={() => {}} label={"Remember me"} />
 
-        <button className="mt-4 main-btn w-full rounded py-3">Sign up</button>
+        <button className="mt-4 main-btn w-full rounded py-3" onClick={onSubmit}>Sign up</button>
         <div className="mt-12">
           <span className="text-muted text-base">
             By registering you agree to the Chatvia

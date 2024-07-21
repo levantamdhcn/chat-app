@@ -3,6 +3,7 @@ import useConversation from '../../hooks/useConversation';
 import ChatBox from '../chat/ChatBox/ChatBox';
 import NavBar from './nav/index';
 import Profile from './profile';
+import { EmptyChat } from '../chat/EmptyChat';
 
 const SideBar = () => {
   const { currentConversation } = useConversation();
@@ -12,15 +13,17 @@ const SideBar = () => {
     headerActionIcon: <span className="icon-more"></span>,
   });
 
-  const { title, children, headerActionIcon } = currentTab;
-
-  console.log('currentConversation', currentConversation);
+  const { children } = currentTab;
 
   return (
     <div className="side-bar">
       <NavBar currentTab={currentTab} setCurrenTab={setCurrentTab} />
       <div className="tab-content-wrapper scroll-wrapper">{children}</div>
-      {currentConversation && <ChatBox conversation={currentConversation} />}
+      {currentConversation ? (
+        <ChatBox conversation={currentConversation} />
+      ) : (
+        <EmptyChat />
+      )}
     </div>
   );
 };

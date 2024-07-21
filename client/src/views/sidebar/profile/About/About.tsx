@@ -1,24 +1,22 @@
 import React from 'react';
 import InfoField from './Info';
+import useAuth from '../../../../hooks/useAuth';
 
 const About = () => {
+    const { user } = useAuth();
   return (
       <div>
         <InfoField 
             title={"Name"} 
-            content={"Patricia Smith"}
+            content={`${user?.firstName || ''} ${user?.lastName || ''}`}
         />
         <InfoField 
             title={"Email"} 
-            content={"adc@123.com"}
+            content={user?.email ?? ''}
         />
         <InfoField 
-            title={"Time"} 
-            content={"40 AM"}
-        />
-        <InfoField 
-            title={"Location"} 
-            content={"California, USA"}
+            title={"Role"} 
+            content={user?.role ?? ''}
         />
       </div>
   );

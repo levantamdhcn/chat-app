@@ -29,10 +29,7 @@ class WebSocket extends Server {
   }
   
   public initializeHandlers(socketHandlers: any[]) {
-    console.log("Start inialize.....");
-    console.log("socketHandlers", socketHandlers);
     socketHandlers.forEach((element: { path: string, handler: ChatSocket }) => {
-      console.log("socket from of handler", element.path);
       const namespace = WebSocket.io.of(element.path).on(SocketEventsEnum.CONNECTION, (socket: Socket) => {
         element.handler.handleConnection(socket);
       });
