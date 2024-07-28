@@ -4,7 +4,6 @@ import { RegisterInput } from "../../../types/api";
 import { SigninInput } from "../../../views/auth/Login";
 import { AuthState } from "./types";
 import jwtDecode from "jwt-decode";
-import { SignUpInput } from "../../../views/auth/SignUp";
 
 const BASE_URL = process.env.REACT_APP_SERVER_ENDPOINT as string;
 
@@ -15,6 +14,7 @@ export const initialState: AuthState = {
   errorMessage: '',
   isAuthenticated: false,
   isInitialised: false,
+  isUserActive: true,
   user: null,
   contacts: [],
   conversations: [],
@@ -34,17 +34,16 @@ export const register = createAsyncThunk(
   `auth/register`, async ({ data }: { data: RegisterInput }, thunkAPI) => {
     try {
       const response = await axios.post(`${BASE_URL}/api/auth/registration`, data);
-      if (response.data) {
+      if (response.status === 400) {
+        return thunkAPI.rejectWithValue(response.data);
+      } else {
         const { user, accessToken, refreshToken } = response.data;
         setSession(accessToken, refreshToken);
 
         return { user };
-      } else {
-        return thunkAPI.rejectWithValue(data);
       }
     } catch (error) {
-      console.log(error);
-      return thunkAPI.rejectWithValue(data);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -55,6 +54,9 @@ export const login = createAsyncThunk(
       const response = await axios.post(`${BASE_URL}/api/auth/login`, data);
       if (response.data.user) {
         const { user, accessToken, refreshToken } = response.data;
+        if (user.status === 'inactive') {
+          return thunkAPI.rejectWithValue(response.data);
+        }
         setSession(accessToken, refreshToken);
         const contacts = await axios.get(`${BASE_URL}/api/contact/user/${user._id}`);
         const conversations = await axios.get(`${BASE_URL}/api/conversation/${user._id}`);
@@ -75,6 +77,10 @@ export const initialise = createAsyncThunk(`auth/initialise`, async ({ accessTok
     const response = await axios.get(`${BASE_URL}/api/user/currentUser`);
     if (response.data) {
       const user = response.data;
+
+      if (user.status === 'inactive') {
+        return thunkAPI.rejectWithValue(response.data);
+      }
       setSession(accessToken, refreshToken);
 
       const contacts = await axios.get(`${BASE_URL}/api/contact/user/${user._id}`);
@@ -91,7 +97,6 @@ export const initialise = createAsyncThunk(`auth/initialise`, async ({ accessTok
 })
 export const logout = () => {
   setSession(null, null);
-  clearState();
 }
 
 export const isValidToken = (accessToken: string) => {
@@ -108,16 +113,32 @@ export const slice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    clearState: () => initialState,
+    clearState: (state) => {
+      state.isFetching = false;
+      state.isSuccess = false;
+      state.errorMessage = '';
+      state.isUserActive = false;
+      state.isAuthenticated = false;
+      state.isInitialised = true;
+    },
   },
   extraReducers: {
     [initialise.pending.type]: (state: AuthState, { payload }) => {
       state.isFetching = true;
     },
     [initialise.rejected.type]: (state: AuthState, { payload }) => {
+      if (payload?.status === 'inactive') {
+        state.isFetching = false;
+        state.isSuccess = true;
+        state.user = payload.user;
+        state.isAuthenticated = true;
+        state.isUserActive = false;
+        return;
+      }
       state.isFetching = false;
       state.isSuccess = false;
       state.errorMessage = payload.errorMessage;
+      state.isUserActive = false;
     },
     [initialise.fulfilled.type]: (state: AuthState, { payload }) => {
       state.isFetching = false;
@@ -125,7 +146,9 @@ export const slice = createSlice({
       state.user = payload.user;
       state.contacts = payload.contacts;
       state.conversations = payload.conversations;
+      state.isInitialised = true;
       state.isAuthenticated = true;
+      state.isUserActive = true;
     },
     [login.fulfilled.type]: (state: AuthState, { payload }: { payload: any }) => {
       state.isFetching = false;
@@ -134,6 +157,8 @@ export const slice = createSlice({
       state.contacts = payload.contacts;
       state.conversations = payload.conversations;
       state.isAuthenticated = true;
+      state.isInitialised = true;
+      state.isUserActive = true;
     },
     [login.pending.type]: (state: AuthState) => {
       state.isFetching = true;
@@ -142,11 +167,16 @@ export const slice = createSlice({
       state.isFetching = false;
       state.isError = true;
       state.errorMessage = payload.message;
+      state.isUserActive = false;
     },
     [register.fulfilled.type]: (state: AuthState, { payload }: { payload: any }) => {
       state.isFetching = false;
       state.isSuccess = true;
       state.user = payload.user;
+      state.isUserActive = false;
+      state.isAuthenticated = true;
+      state.isInitialised = true;
+      state.errorMessage = '';
     },
     [register.pending.type]: (state: AuthState) => {
       state.isFetching = true;
@@ -155,6 +185,7 @@ export const slice = createSlice({
       state.isFetching = false;
       state.isError = true;
       state.errorMessage = payload.message;
+      state.isUserActive = true;
     },
   }
 });

@@ -5,6 +5,8 @@ import App from './App';
 import { store } from './configuration/store';
 import reportWebVitals from './reportWebVitals';
 
+import "./index.css";
+
 const AppProvider: React.FC = ({ children }) => (
   <Provider store={store}>{children}</Provider>
 );

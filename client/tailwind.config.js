@@ -1,12 +1,21 @@
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     extend: {
       colors: {
-        'grey-700': '#e1e9f1',
-        'muted': '#9aa1b9',
-        'main': '#7269ef'
+        main: '#7269ef',
+        darkColor: '#313a43',
+        borderColor: '#36404a',
+        rockBlue: '#a6b0cf',
+        lightPurple: 'rgb(166, 176, 207)',
+        bsDark: '#eff2f7',
       },
+      shadows: {
+        popup: '0 2px 4px rgba(15,34,58,.12)',
+      }
     },
     container: {
       maxWidth: {
@@ -29,10 +38,6 @@ module.exports = {
       '4xl': '2.441rem',
       '5xl': '3.052rem',
       '21': '21px',
-    },
-    backgroundColor: {
-      'body-dark': '#303841',
-      'card-dark': '#262e35',
     }
   },
   plugins: [],

@@ -5,6 +5,7 @@ import MainLayout from "./layouts/MainLayout/index";
 import Login from "./views/auth/Login";
 import Signup from "./views/auth/SignUp";
 import TabContent from "./views/sidebar";
+import { ResendMail } from "./views/auth/ResendMail";
 
 interface route {
   component: React.FC;
@@ -63,6 +64,13 @@ const routers = [
     path: "/login",
     layout: AuthLayout,
     component: Login,
+    needAuth: false,
+  },
+  {
+    exact: true,
+    path: "/resend-mail",
+    layout: AuthLayout,
+    component: ResendMail,
     needAuth: false,
   },
   {

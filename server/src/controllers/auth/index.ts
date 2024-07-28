@@ -1,12 +1,12 @@
-import { ICreateUserDto, IUser, status } from "../../interfaces/user";
-import { Post, Body, Inject, Get, Route, Path } from "tsoa";
-import USER from "../../models/user";
-import jwt from "jsonwebtoken";
-import config from "../../config";
-import { sendConfirmationEmail } from "../../utils/nodemailer";
-import { cloudinaryInstance } from "../../utils/cloudinary";
-import { AuthService } from "../../services/auth";
-import { ErrorEnum } from "../../interfaces/ErrorHandler";
+import { ICreateUserDto, IUser, status } from '../../interfaces/user';
+import { Post, Body, Inject, Get, Route, Path } from 'tsoa';
+import USER from '../../models/user';
+import jwt from 'jsonwebtoken';
+import config from '../../config';
+import { sendConfirmationEmail } from '../../utils/nodemailer';
+import { cloudinaryInstance } from '../../utils/cloudinary';
+import { AuthService } from '../../services/auth';
+import { ErrorEnum } from '../../interfaces/ErrorHandler';
 
 @Route('auth')
 class AuthController {
@@ -85,17 +85,6 @@ class AuthController {
       throw new Error(ErrorEnum.invalidPassword);
     }
 
-    if (u.status != status.active) {
-      await sendConfirmationEmail(
-        `${u.firstName} ${u.lastName}`,
-        u.email,
-        u.confirmationCode
-      );
-
-      throw new Error('Pending Account. Please Verify Your Email!');
-
-    }
-
     const tokens = AuthService.generateTokens(u.toJSON());
 
     return {
@@ -141,6 +130,27 @@ class AuthController {
 
     return updatedU;
   }
-};
+
+  @Post('/resendMail')
+  public async resendEmail(
+    @Body() data: { email: string }
+  ): Promise<{ message: string } | null> {
+    let u = await USER.findOne({
+      email: data.email,
+    });
+
+    if (!u) {
+      throw new Error('User Not found.');
+    }
+
+    await sendConfirmationEmail(
+      `${u.firstName} ${u.lastName}`,
+      u.email,
+      u.confirmationCode
+    );
+
+    return { message: 'Email sent' };
+  }
+}
 
 export default new AuthController();

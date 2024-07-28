@@ -8,6 +8,7 @@ export interface AuthState {
   errorMessage: string;
   isAuthenticated: boolean;
   isInitialised: boolean;
+  isUserActive: boolean;
   user: IUser | null;
   contacts: IContact[];
   conversations: TConversation[];

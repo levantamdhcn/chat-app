@@ -3,6 +3,7 @@ import passportLocal from "passport-local";
 import passportJwt from "passport-jwt";
 import USER from "./models/user";
 import config from "./config";
+import { status } from "./interfaces/user";
 
 const LocalStrategy = passportLocal.Strategy;
 const jwtStrategy = passportJwt.Strategy;
@@ -16,6 +17,12 @@ passport.use(new LocalStrategy((email: string, password: string, done) => {
 
     if (!user) {
       return done(undefined, false, { message: `Email ${email} not found.` });
+    }
+
+    if (user.status === status.inactive) {
+      return done(undefined, false, {
+        message: 'Pending Account. Please Verify Your Email!',
+      });
     }
 
     user.validPassword(password).then((result: boolean) => {

@@ -70,6 +70,15 @@ class Auth {
         res.status(404).json({ message: "Verify failed." });
       }
     })
+
+    this.rout.post("/resendEmail", async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const result = await this.controller.resendEmail(req.body);
+        res.status(200).json(result);
+      } catch (error) {
+        res.status(404).json({ message: "Sent failed." });
+      }
+    })
   };
 };
 

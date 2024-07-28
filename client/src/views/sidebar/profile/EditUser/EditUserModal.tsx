@@ -25,24 +25,28 @@ const EditUserModal = () => {
         placeholder="Email"
         value={formData.email}
         setValue={(e) => setField('email', e.target.value)}
+        required={false}
       />
       <InputText
         label="First Name"
         placeholder="First Name"
         value={formData.firstName}
         setValue={(e) => setField('firstName', e.target.value)}
+        required={false}
       />
       <InputText
         label="Last Name"
         placeholder="Last Name"
         value={formData.lastName}
         setValue={(e) => setField('lastName', e.target.value)}
+        required={false}
       />
       <InputPassword
         label="Password"
         placeholder="Password"
         value={formData.password}
         setValue={(e) => setField('password', e.target.value)}
+        required={false}
       />
     </div>
   );
