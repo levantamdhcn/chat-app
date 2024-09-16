@@ -17,7 +17,7 @@ phases:
   post_build:
     commands:
       - echo "the post build phase. navigating back to root path"
-      - cp -R build/ ../
+      - cp -R build/ ./
 artifacts:
   files:
     - build/**/*
