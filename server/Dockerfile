@@ -15,6 +15,6 @@ RUN npm ci
 # copy local files to app folder
 COPY . .
 
-EXPOSE 3015
+EXPOSE 4000
 
 CMD ["yarn", "dev"]
