@@ -1,7 +1,7 @@
 # Dockerfile for React client
 
 # Build react client
-FROM node:16.17.0-alpine3.16
+FROM node:18.17.0-alpine3.18
 
 # Working directory
 WORKDIR /src
@@ -10,7 +10,9 @@ COPY package*.json ./
 
 ### Installing dependencies
 
-RUN npm i
+RUN npm ci
+
+RUN npm i -g ts-node tsoa
 
 # copy local files to app folder
 COPY . .
