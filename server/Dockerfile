@@ -10,7 +10,7 @@ COPY package*.json ./
 
 ### Installing dependencies
 
-RUN npm ci
+RUN npm i
 
 # copy local files to app folder
 COPY . .
