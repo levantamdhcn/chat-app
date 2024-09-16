@@ -1,7 +1,7 @@
 # Dockerfile for React client
 
 # Build react client
-FROM node:14.20.1-alpine
+FROM node:16.17.0-alpine3.16
 
 # Working directory
 WORKDIR /src
