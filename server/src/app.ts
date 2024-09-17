@@ -53,6 +53,7 @@ class ServerModule {
       },
     );
 
+    // config
     if (config.env.APP_PORT) {
       swaggerDocs(this.app, config.env.APP_PORT);
     };
