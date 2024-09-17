@@ -12,8 +12,6 @@ COPY package*.json ./
 
 RUN npm ci
 
-RUN npm i -g ts-node tsoa
-
 # copy local files to app folder
 COPY . .
 
