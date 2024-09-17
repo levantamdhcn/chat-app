@@ -1,6 +1,4 @@
-# Dockerfile for React client
-
-# Build react client
+# Build node server
 FROM node:18.17.0-alpine3.18
 
 # Working directory
