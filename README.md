@@ -1,6 +1,9 @@
 ## Description
 MERN stack chat application build with Typescript & Socket.IO
 
+## Node
+Using node 18.17.0
+
 ## Installation
 
 ```bash
