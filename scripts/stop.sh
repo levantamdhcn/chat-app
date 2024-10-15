@@ -1,4 +1,4 @@
-#stop-containers.sh
+#stop.sh
 
 #!/bin/sh
 

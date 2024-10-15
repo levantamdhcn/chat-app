@@ -1,4 +1,4 @@
-#start-containers.sh
+#start.sh
 
 #!/bin/sh
 cd /home/tamlv/chat-app
