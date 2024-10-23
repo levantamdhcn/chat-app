@@ -2,7 +2,7 @@
 
 #!/bin/sh
 
-cd /home/tamlv/chat-app
+cd /home/ubuntu/chat-app
 sudo cp -r build/* nginx
 
 if ! docker info > /dev/null 2>&1; then
