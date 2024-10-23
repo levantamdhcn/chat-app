@@ -7,7 +7,8 @@ phases:
     commands:
       - echo "the prebuild phase begins"
       - cd client
-      - npm ci
+      - npm i -g yarn
+      - yarn
   build:
     commands:
       - echo "the build phase begins"
