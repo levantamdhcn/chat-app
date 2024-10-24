@@ -66,7 +66,7 @@ const Login = () => {
           <div className="text-center mb-7">
             <h4 className="text-21 font-bold mb-2 text-bsDark">Sign in</h4>
             <span className="text-muted text-bsDark">
-              Sign in to continue to Chatvia.
+              Sign in to continue to Chatvia1.
             </span>
           </div>
           <div className="login-form rounded bg-borderColor shadow-md p-10">
