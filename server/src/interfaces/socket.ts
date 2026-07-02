@@ -13,6 +13,7 @@ export enum SocketEventsEnum {
   MSG_SEND_FILE = 'msg_send:file',
   MSG_RECEIVE = 'msg_receive',
   ERROR = 'error',
+  JOIN_ROOM = 'join_room'
 }
 
 export default ISocket;

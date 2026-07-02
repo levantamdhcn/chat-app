@@ -138,42 +138,6 @@
 			"IUserResponse": {
 				"$ref": "#/components/schemas/Omit_CreatedUser.password-or-reset_password_token-or-confirmationCode_"
 			},
-			"Partial_IUser_": {
-				"properties": {
-					"firstName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
-					"email": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					},
-					"avatar": {
-						"type": "string"
-					},
-					"isEmailVerified": {
-						"type": "boolean"
-					},
-					"role": {
-						"type": "string"
-					},
-					"status": {
-						"type": "string"
-					},
-					"reset_password_token": {
-						"type": "string"
-					},
-					"confirmationCode": {
-						"type": "string"
-					}
-				},
-				"type": "object",
-				"description": "Make all properties in T optional"
-			},
 			"CreatedUser": {
 				"properties": {
 					"firstName": {
@@ -389,6 +353,7 @@
 									},
 									"required": [
 										"user",
+										"refreshToken",
 										"accessToken"
 									],
 									"type": "object"

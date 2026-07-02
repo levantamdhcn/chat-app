@@ -1,5 +1,9 @@
 .chatList-content {
-  padding: 24px;
+  padding: 24px 14px 24px 24px;
+}
+
+.chatList-wrapper {
+  max-height: calc(100vh - 178px);
 }
 
 .messageList {
