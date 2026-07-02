@@ -1,5 +1,6 @@
 import React from 'react';
 import Avatar from '../../../assets/images/avatar.jpg'
+import useAuth from '../../../hooks/useAuth';
 import Chat from '../chat/Chat';
 import Contacts from '../contacts';
 import Groups from '../group/Groups';
@@ -50,6 +51,7 @@ const navBottom  = [
 ]
 
 const NavBar = ({ currentTab, setCurrenTab }) => {
+  const { user } = useAuth();
   return (
     <div className='navbar'>
       <div className="logo">
@@ -75,7 +77,7 @@ const NavBar = ({ currentTab, setCurrenTab }) => {
         {
           navBottom.map(el => (
             <div className='nav-item' key={el.icon}>
-              {el.icon ? (<span className={`icon-${el.icon} hover-effect`}></span>) : <img src={Avatar} alt='user'/>}
+              {el.icon ? (<span className={`icon-${el.icon} hover-effect`}></span>) : <img src={user.avatar || Avatar} alt='user'/>}
             </div>
           ))
         }

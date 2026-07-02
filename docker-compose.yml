@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: chatvia-server
+    container_name: chatvia-server
+    ports:
+      - "3015:3015"
+    env_file: ./server/.env
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: chatvia-client
+    container_name: chatvia-client
+    depends_on:
+      - server
+    ports:
+      - "3000:3000"

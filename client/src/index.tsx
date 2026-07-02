@@ -1,11 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import App from './App';
+import { store } from './configuration/store';
 import reportWebVitals from './reportWebVitals';
+
+const AppProvider: React.FC = ({ children }) => (
+  <Provider store={store}>{children}</Provider>
+);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AppProvider>
+      <App />
+    </AppProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

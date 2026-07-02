@@ -1,16 +1,13 @@
 import React from 'react';
 import NavBar from '../../views/sidebar/nav/NavBar';
 import TabContent from '../../views/sidebar';
+import { Outlet } from 'react-router-dom';
 
-interface MainLayoutProp {
-  children : Node
-}
-
-const MainLayout = ({ children }: MainLayoutProp) => {
+const MainLayout = () => {
   return (
       <div className="main-panel">
           <div className="children-wrapper">
-            {children}
+            <Outlet />
           </div>
       </div>
   )

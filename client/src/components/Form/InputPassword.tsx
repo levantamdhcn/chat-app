@@ -7,7 +7,7 @@ interface InputPasswordProp {
     placeholder: string
     disabled?: boolean
 }
-const InputPassword = ({ label, value, setValue, placeholder, disabled }: InputPasswordProp) => {
+const InputPassword = ({ label, setValue, placeholder, disabled }: InputPasswordProp) => {
   return (
     <div className='custom-input'>
         <label htmlFor="" className="custom-input-label">{label}</label>
@@ -15,7 +15,6 @@ const InputPassword = ({ label, value, setValue, placeholder, disabled }: InputP
             type="password" 
             placeholder={placeholder}
             onChange={setValue}
-            value={value}
             disabled={disabled}
             className="custom-input-field"
         />
